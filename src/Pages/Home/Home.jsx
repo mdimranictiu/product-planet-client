@@ -1,9 +1,11 @@
 import React from 'react';
+import gifUrl from '../../assets/image/pre.gif'
 
 const Home = () => {
     return (
         <div>
-            This is Home
+           
+    
         </div>
     );
 };

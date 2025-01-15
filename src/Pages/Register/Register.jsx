@@ -9,7 +9,7 @@ import { updateProfile } from "firebase/auth";
 import Swal from "sweetalert2";
 
 const Register = () => {
-    const {createuser}=useContext(AuthContext);
+    const {createuser,signInWithGoogle}=useContext(AuthContext);
     const navigate=useNavigate();
     const {
         register,
@@ -48,6 +48,26 @@ const Register = () => {
         })
         .catch((error)=>{
             console.log('error',error)
+            Swal.fire({
+              icon: "error",
+              title: "Something went wrong!",
+              text: error.message,
+            });
+            reset();
+});
+       
+      }
+      const handleGoogleSignIn=()=>{
+        signInWithGoogle()
+        .then(()=>{
+          navigate('/')
+        })
+        .catch((error)=>{
+          Swal.fire({
+            icon: "error",
+            title: "Something went wrong!",
+            text: error.message,
+          });
         })
       }
   return (
@@ -133,7 +153,7 @@ const Register = () => {
       className="hover:scale-110 text-blue-600 transition-transform duration-300"
     />
 
-    <FcGoogle
+    <FcGoogle onClick={handleGoogleSignIn}
       title="Register with Google"
       className="hover:scale-110 transition-transform duration-300"
     />

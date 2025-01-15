@@ -62,18 +62,8 @@ const NavBar = () => {
         // if any user found then this link will be shown
         user && (
           <>
-            <li>
-              <Link to="/products">Products</Link>
-            </li>
-            <li>
-              <Link to="/products">Products</Link>
-            </li>
-            <li>
-              <Link to="/products">Products</Link>
-            </li>
-            <li>
-              <Link to="/products">Products</Link>
-            </li>
+          
+         
           </>
         )
       }
@@ -114,17 +104,17 @@ const NavBar = () => {
          
         </div>
       ) : (
-        <div className="flex gap-6 ml-32 text-xl max-sm:gap-12">
+        <div className="flex gap-6 max-sm:hidden ml-32 text-xl max-sm:gap-12">
           <button>
             {" "}
-            <Link to="/login" className="px-4 py-2 text-white bg-black rounded">
+            <Link to="/login" className="px-4 py-2 text-white bg-[#FF6154] rounded">
               Login
             </Link>
           </button>
           <button>
             <Link
               to="/register"
-              className="px-4 py-2 text-white bg-black rounded"
+              className="px-4 py-2 text-white bg-[#FF6154] rounded"
             >
               Register
             </Link>
@@ -135,7 +125,7 @@ const NavBar = () => {
   );
 
   return (
-    <div className="bg-gradient-to-r from-[#FFDCCF] to-[#c4a99f] shadow-xl">
+    <div className="bg-[#1F2937] text-white shadow-xl">
        
       <div className="flex w-4/5 mx-auto justify-between  px-6  items-center py-5 ">
          <div className="flex gap-2 items-center">
@@ -147,10 +137,9 @@ const NavBar = () => {
         <div className="max-md:hidden">
           <ul className="flex ml-32 gap-6 text-xl">{links}</ul>
         </div>
-        <div className="max-md:hidden">{conditionalMenu}</div>
-        <div></div>
+        <div className="">{conditionalMenu}</div>
       </div>
-      <div ref={menuClickRef} className={`fixed top-[80px] left-0 py-12 z-40 w-full bg-white shadow-lg transform transition-transform duration-300 ${
+      <div ref={menuClickRef} className={`fixed top-[80px] left-0 py-12 z-40 w-full bg-white text-[#282344] shadow-lg transform transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}>
             <button
@@ -162,22 +151,24 @@ const NavBar = () => {
         <ul className="flex my-5 text-xl flex-col ml-[25px] items-start gap-5">
         {links}
         </ul>
-        <div className="flex ml-[25px] flex-col gap-10 items-start">
+        {user? "" : <>
+          <div className="flex ml-[25px] flex-col gap-10 items-start">
           <button>
             
-            <Link to="/login" className="px-4 py-2 text-white bg-black rounded">
+            <Link to="/login" className="px-4 py-2 text-white bg-[#FF6154] rounded">
               Login
             </Link>
           </button>
           <button>
             <Link
               to="/register"
-              className="px-4 py-2 text-white bg-black rounded"
+              className="px-4 py-2 text-white bg-[#FF6154] rounded"
             >
               Register
             </Link>
           </button>
         </div>
+        </>}
       </div>
     </div>
   );

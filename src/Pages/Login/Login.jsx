@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 
 
 const Login = () => {
-    const {signInUser}=useContext(AuthContext);
+    const {signInUser,signInWithGoogle}=useContext(AuthContext);
     const navigate=useNavigate()
         const {
             register,
@@ -36,6 +36,19 @@ const Login = () => {
             })
 
           }
+           const handleGoogleSignIn=()=>{
+                  signInWithGoogle()
+                  .then(()=>{
+                    navigate('/')
+                  })
+                  .catch((error)=>{
+                    Swal.fire({
+                      icon: "error",
+                      title: "Something went wrong!",
+                      text: error.message,
+                    });
+                  })
+                }
   return (
     <div className="flex justify-center py-10 min-h-screen ">
       <div className="w-full max-w-xl   shadow-[32px] rounded-lg p-8">
@@ -83,7 +96,7 @@ const Login = () => {
       type="submit" 
       className="w-full py-2 text-white rounded-sm bg-[#FF6154] hover:bg-white text-xl duration-500 hover:text-[#FF6154] font-semibold"
     >
-      Register
+      Login
     </button>
 
         </form>
@@ -105,7 +118,7 @@ const Login = () => {
     />
 
     <FcGoogle
-      title="Register with Google"
+            title="Register with Google" onClick={handleGoogleSignIn}
       className="hover:scale-110 transition-transform duration-300"
     />
     
