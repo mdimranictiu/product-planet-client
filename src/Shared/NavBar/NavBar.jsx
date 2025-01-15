@@ -1,16 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { MdDashboardCustomize } from "react-icons/md";
 import { MdLogout } from "react-icons/md";
 import { RiMenu2Line } from "react-icons/ri";
 import { MdClose } from "react-icons/md";
+import { AuthContext } from "../../AuthContext/AuthProvider";
 
 
 
 
 
 const NavBar = () => {
-  const user = true;
+  const {user,logOut}=useContext(AuthContext)
   const dropdownRef=useRef(null)
   const menuClickRef=useRef(null)
   const [menuOpen, setMenuOpen] = useState(false);
@@ -33,18 +34,21 @@ const NavBar = () => {
     }
 
   },[])
-  useEffect(()=>{
-    const handleClickMenuOutside=(event)=>{
-        if(menuClickRef.current && !menuClickRef.current.contains(event.target)){
-            setMenuOpen(false)
-        }
-    }
-    document.addEventListener('mousedown',handleClickMenuOutside);
-    return ()=>{
-        document.removeEventListener('mousedown',handleClickMenuOutside)
-    }
+  // useEffect(()=>{
+  //   const handleClickMenuOutside=(event)=>{
+  //       if(menuClickRef.current && !menuClickRef.current.contains(event.target)){
+  //           setMenuOpen(false)
+  //       }
+  //   }
+  //   document.addEventListener('mousedown',handleClickMenuOutside);
+  //   return ()=>{
+  //       document.removeEventListener('mousedown',handleClickMenuOutside)
+  //   }
 
-  },[])
+  // },[])
+  const handleSignOut=()=>{
+    logOut();
+  }
   const links = (
     <>
       <li>
@@ -86,23 +90,23 @@ const NavBar = () => {
             <img
               src={user.photoURL}
               alt="Profile"
-              className="w-full h-full object-cover"
+              className="w-full h-full rounded-full object-cover"
             />
           </button>
    
    { dropdownOpen && (
-     <div className="absolute py-3 mt-[230px] max-sm:mt-[60px] -right-[80px] w-48  rounded shadow-lg z-10">
+     <div className="absolute py-3 mt-[236px] max-sm:mt-[60px] text-white bg-[#282344] -ml-[80px] w-48  rounded shadow-lg z-10">
      <div className="px-4 py-2">
-       <p className="text-gray-700 font-medium">Username</p>
+       <p className=" font-medium">{user.displayName}</p>
      </div>
      <ul className="py-1">
-     <li className="flex items-center px-4 py-2 hover:bg-gray-100">
+     <li className="flex items-center px-4 py-2">
               <MdDashboardCustomize className="mr-2" />
-              <Link to="/dashboard" className="text-gray-700">Dashboard</Link>
+              <Link to="/dashboard" className="">Dashboard</Link>
             </li>
-            <li className="flex items-center px-4 py-2 hover:bg-gray-100">
+            <li onClick={handleSignOut} className="flex items-center px-4 py-2">
               <MdLogout className="mr-2" />
-              <button className="text-gray-700 w-full text-left">Logout</button>
+              <button className=" w-full text-left">Logout</button>
             </li>
      </ul>
    </div>
@@ -131,20 +135,22 @@ const NavBar = () => {
   );
 
   return (
-    <div className="bg-white shadow-sm">
+    <div className="bg-gradient-to-r from-[#FFDCCF] to-[#c4a99f] shadow-xl">
        
       <div className="flex w-4/5 mx-auto justify-between  px-6  items-center py-5 ">
-      <div className="hidden  px-3 max-md:block">
+         <div className="flex gap-2 items-center">
+         <div className="hidden  px-3 max-md:block">
         <RiMenu2Line onClick={() => setMenuOpen(!menuOpen)} className="text-2xl"></RiMenu2Line>
         </div>
-        <h2 className="text-2xl max-sm:text-xl max-sm:ml-24 font-bold">Product Planet</h2>
-        <div className="max-md:hidden ">
+        <Link to='/'><h2 className="text-2xl max-sm:text-xl  font-bold">Product Planet</h2></Link>
+         </div>
+        <div className="max-md:hidden">
           <ul className="flex ml-32 gap-6 text-xl">{links}</ul>
         </div>
-        <div>{conditionalMenu}</div>
+        <div className="max-md:hidden">{conditionalMenu}</div>
         <div></div>
       </div>
-      <div ref={menuClickRef} className={`fixed top-[90px] left-0 py-10 z-40 w-full bg-gray-500  shadow-lg transform transition-transform duration-300 ${
+      <div ref={menuClickRef} className={`fixed top-[80px] left-0 py-12 z-40 w-full bg-white shadow-lg transform transition-transform duration-300 ${
           menuOpen ? "translate-x-0" : "-translate-x-full"
         }`}>
             <button
@@ -156,7 +162,7 @@ const NavBar = () => {
         <ul className="flex my-5 text-xl flex-col ml-[25px] items-start gap-5">
         {links}
         </ul>
-        <div className="flex ml-[25px] flex-col gap-5 items-start">
+        <div className="flex ml-[25px] flex-col gap-10 items-start">
           <button>
             
             <Link to="/login" className="px-4 py-2 text-white bg-black rounded">
