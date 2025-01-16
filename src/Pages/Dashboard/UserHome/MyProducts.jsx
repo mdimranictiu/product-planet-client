@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import useAuth from "../../../hook/useAuth";
 import UseAxiosSecure from "../../../hook/useAxiosSecure/UseAxiosSecure";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../AuthContext/AuthProvider";
 
 const MyProducts = () => {
   const { user } = useAuth();
@@ -93,12 +94,11 @@ const MyProducts = () => {
                       {product.status || "Pending"}
                     </td>
                     <td className="border border-gray-300 px-4 py-2">
-                      <button
-                        // onClick={() => handleUpdate(product._id)}
+                      <Link to='/dashboard/UpdateProduct' state={{productId: product._id}}><button
                         className="mr-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                       >
                         Update
-                      </button>
+                      </button></Link>
                       <button
                         onClick={() => handleDelete(product._id)}
                         className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
