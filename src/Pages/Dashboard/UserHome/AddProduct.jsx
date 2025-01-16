@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { WithContext as ReactTags ,SEPARATORS} from "react-tag-input";
 import useAuth from "../../../hook/useAuth";
 import { useForm } from "react-hook-form"
+import UseAxiosSecure from "../../../hook/useAxiosSecure/UseAxiosSecure";
+import Swal from "sweetalert2";
 
 const AddProduct = () => {
   const { user } = useAuth();
@@ -24,6 +26,7 @@ const AddProduct = () => {
     setTags(newTags);
   };
 // send add product information to MongoDB
+const axiosSecure=UseAxiosSecure()
 const {
         register,
         handleSubmit,
@@ -32,7 +35,37 @@ const {
       } = useForm()
     
       const onSubmit = (data) => {
-       console.log(data)
+        
+        const ownerInfo={
+            name: user?.displayName,
+            email:user?.email,
+            photoURL:user?.photoURL
+        }
+        const newProduct={
+            ...data ,ownerInfo,tags
+        }
+        console.log(newProduct)
+        axiosSecure.post('/addProduct',newProduct)
+        .then((res)=>{
+          if(res.data.insertedId){
+            Swal.fire({
+              title: "Good job!",
+              text: "Product Added Successfully",
+              icon: "success",
+              timer:1500
+            });
+            reset()
+          }
+        
+        })
+        .catch((error)=>{
+          Swal.fire({
+            icon: "error",
+            title: "Failed to Add Product",
+            text:error.message,
+            
+          });
+        })
       }
  
 
@@ -90,7 +123,7 @@ const {
                   Owner Name <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="text" {...register("productOwnerName")}
+                  type="text"
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 focus:outline-none"
                   value={user?.displayName}
                   disabled
@@ -101,7 +134,7 @@ const {
                   Owner Email <span className="text-red-500">*</span>
                 </label>
                 <input
-                  type="email" {...register("productOwneremail")}
+                  type="email" 
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 focus:outline-none"
                   value={user?.email }
                   disabled
@@ -114,7 +147,7 @@ const {
                 Owner Image <span className="text-red-500">*</span>
               </label>
               <input
-                type="text" {...register("productOwnerphotoURL")}
+                type="text"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-500 focus:outline-none"
                 value={user?.photoURL}
                 disabled
