@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { FaXTwitter } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
 import { AuthContext } from "../../AuthContext/AuthProvider";
 import Swal from "sweetalert2";
@@ -10,6 +10,9 @@ import Swal from "sweetalert2";
 
 const Login = () => {
     const {signInUser,signInWithGoogle}=useContext(AuthContext);
+    const location=useLocation();
+    const from=location.state?.from?.pathname || '/';
+    console.log(from)
     const navigate=useNavigate()
         const {
             register,
@@ -24,7 +27,7 @@ const Login = () => {
             signInUser(email,password)
             .then((res)=>{
                 reset();
-                navigate('/');
+                navigate(from);
             })
             .catch((error)=>{
                 Swal.fire({
@@ -39,7 +42,7 @@ const Login = () => {
            const handleGoogleSignIn=()=>{
                   signInWithGoogle()
                   .then(()=>{
-                    navigate('/')
+                    navigate(from)
                   })
                   .catch((error)=>{
                     Swal.fire({

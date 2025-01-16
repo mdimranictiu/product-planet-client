@@ -9,6 +9,7 @@ import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import Dashboard from "../Layout/Dashboard/Dashboard";
 import Welcome from "../Pages/Dashboard/Welcome/Welcome";
 import MyProfile from "../Pages/Dashboard/UserHome/MyProfile";
+import AddProduct from "../Pages/Dashboard/UserHome/AddProduct";
 
 
 export const router = createBrowserRouter([
@@ -33,7 +34,7 @@ export const router = createBrowserRouter([
     },
     {
       path:'/dashboard',
-      element: <Dashboard></Dashboard>,
+      element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
       children:[
         {
           path:'',
@@ -42,6 +43,10 @@ export const router = createBrowserRouter([
         {
           path:'MyProfile',
           element: <MyProfile></MyProfile>
+        },
+        {
+          path:'AddProduct',
+          element: <AddProduct></AddProduct>
         }
       ]
     }
