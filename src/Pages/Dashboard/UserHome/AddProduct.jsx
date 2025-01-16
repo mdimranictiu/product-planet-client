@@ -41,8 +41,9 @@ const {
             email:user?.email,
             photoURL:user?.photoURL
         }
+        const status='pending'
         const newProduct={
-            ...data ,ownerInfo,tags
+            ...data ,ownerInfo,tags,status
         }
         console.log(newProduct)
         axiosSecure.post('/addProduct',newProduct)

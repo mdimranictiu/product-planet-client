@@ -6,6 +6,7 @@ import { MdDashboardCustomize, MdLogout } from 'react-icons/md';
 import { IoAddCircle } from 'react-icons/io5';
 import { FaBox } from "react-icons/fa";
 import { AuthContext } from '../../AuthContext/AuthProvider';
+import useModerator from '../../hook/useModerator';
 
 
 
@@ -18,6 +19,8 @@ const Dashboard = () => {
     navigate('/');
     
   }
+  const moderator = useModerator();
+  console.log(moderator?.moderator)
     return (
         <div>
             
@@ -28,8 +31,24 @@ const Dashboard = () => {
             <h2 className=''>Dashboard</h2>
             </div>
            <ul className='font-bold text-xl  space-y-2 '>
-                
+            {moderator?.moderator ? 
+            (
+              <>
+               <li className='py-3'>
+                  <NavLink className='flex gap-2 items-center' to="/dashboard">
+                    <FaHome></FaHome><p>Product Review Queue </p>
+                  </NavLink>
+                </li>
                 <li className='py-3'>
+                  <NavLink className='flex gap-2 items-center' to="/dashboard/MyProfile">
+                    <FaUserCircle></FaUserCircle><p>Reported Contents </p>
+                  </NavLink>
+                </li>
+              </>
+            )
+            :
+            (<>
+            <li className='py-3'>
                   <NavLink className='flex gap-2 items-center' to="/dashboard">
                     <FaHome></FaHome><p>Home</p>
                   </NavLink>
@@ -49,6 +68,10 @@ const Dashboard = () => {
                     <FaBox></FaBox><p>My Products</p>
                   </NavLink>
                 </li>
+            </>)
+            }
+                
+                
   
               </ul>
               <div className="py-32">

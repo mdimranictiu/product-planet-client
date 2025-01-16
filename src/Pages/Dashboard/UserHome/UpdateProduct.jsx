@@ -1,30 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { WithContext as ReactTags ,SEPARATORS} from "react-tag-input";
+import React, { useContext, useEffect, useState } from "react";
+import { WithContext as ReactTags, SEPARATORS } from "react-tag-input";
 import useAuth from "../../../hook/useAuth";
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
 import UseAxiosSecure from "../../../hook/useAxiosSecure/UseAxiosSecure";
 import Swal from "sweetalert2";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../AuthContext/AuthProvider";
 
 const UpdateProduct = () => {
   const { user } = useAuth();
-  const [product,setProduct]=useState()
-  const [tags, setTags] = useState([
-  ]);
-  const location=useLocation();
-  const updateDataId=location.state.productId;
-  console.log(updateDataId)
-   const axiosSecure =UseAxiosSecure()
-  useEffect(()=>{
-    axiosSecure.get(`/myProducts/${updateDataId}`)
-    .then((res)=>{
-        setProduct(res.data)
-    })
-    .catch((error)=>{
-        console.log('error to fetch',error)
-    })
-  },[axiosSecure])
-   console.log(product)
+  const [product, setProduct] = useState();
+  const [tags, setTags] = useState([]);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const updateDataId = location.state.productId;
+const {loading,setLoading}=useContext(AuthContext)
+  const axiosSecure = UseAxiosSecure();
+
+  useEffect(() => {
+    // Fetch product data
+    axiosSecure
+      .get(`/myProducts/${updateDataId}`)
+      .then((res) => {
+        setProduct(res.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log("Error fetching product data", error);
+        setLoading(false);
+      });
+  }, [axiosSecure, updateDataId]);
+
   const handleDelete = (i) => {
     setTags(tags.filter((tag, index) => index !== i));
   };
@@ -39,49 +45,41 @@ const UpdateProduct = () => {
     newTags.splice(newPos, 0, tag);
     setTags(newTags);
   };
-// send add product information to MongoDB
 
-const {
-        register,
-        handleSubmit,
-        watch,
-        formState: { errors },reset,
-      } = useForm()
-    
-      const onSubmit = (data) => {
-        
-        const ownerInfo={
-            name: user?.displayName,
-            email:user?.email,
-            photoURL:user?.photoURL
-        }
-        const updateProduct={
-            ...data ,ownerInfo,tags
-        }
-        console.log(updateProduct)
-        axiosSecure.post('/UpdateProduct',updateProduct)
-        .then((res)=>{
-          if(res.data.modifiedCount){
-            Swal.fire({
-              title: "Good job!",
-              text: "Product Update Successfully",
-              icon: "success",
-              timer:1500
-            });
-            reset()
-          }
-        
-        })
-        .catch((error)=>{
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+
+  const onSubmit = (data) => {
+    const updateProduct = {
+      ...data,
+      tags,
+    };
+    axiosSecure
+      .patch(`/UpdateProduct/${updateDataId}`, updateProduct)
+      .then((res) => {
+        if (res.data.modifiedCount) {
           Swal.fire({
-            icon: "error",
-            title: "Failed to Update Product",
-            text:error.message,
-            
+            title: "Good job!",
+            text: "Product Updated Successfully",
+            icon: "success",
+            timer: 1500,
           });
-        })
-      }
- 
+          navigate("/dashboard/MyProducts");
+        }
+      })
+      .catch((error) => {
+        const errorMessage = error.message || "An unknown error occurred.";
+        Swal.fire({
+          icon: "error",
+          title: "Failed to Update Product",
+          text: errorMessage,
+        });
+      });
+  };
 
   return (
     <div className="flex justify-center py-10 min-h-screen bg-gray-100">
@@ -97,7 +95,9 @@ const {
                 Product Name <span className="text-red-500">*</span>
               </label>
               <input
-                type="text" {...register("productName")} def
+                type="text"
+                {...register("productName")}
+                defaultValue={product?.productName || ""}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EACABE] focus:outline-none"
                 placeholder="Enter Product Name"
                 required
@@ -110,7 +110,9 @@ const {
                 Product Image URL <span className="text-red-500">*</span>
               </label>
               <input
-                type="text" {...register("productPhotoURL")}
+                type="text"
+                {...register("productPhotoURL")}
+                defaultValue={product?.productPhotoURL || ""}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EACABE] focus:outline-none"
                 placeholder="Enter Product Image URL"
                 required
@@ -122,7 +124,9 @@ const {
               <label className="block text-gray-600 font-semibold mb-2">
                 Description <span className="text-red-500">*</span>
               </label>
-              <textarea {...register("productDescription")}
+              <textarea
+                {...register("productDescription")}
+                defaultValue={product?.productDescription || ""}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EACABE] focus:outline-none"
                 placeholder="Enter Product Description"
                 rows="4"
@@ -130,23 +134,19 @@ const {
               ></textarea>
             </div>
 
-
-
             {/* Tags Input */}
-            <div className="mb-4  p-5">
-              <label className="block  text-gray-600 font-semibold mb-2">
-                Tags
-              </label>
-              <ReactTags className='w-full p-5'
+            <div className="mb-4 p-5">
+              <label className="block text-gray-600 font-semibold mb-2">Tags</label>
+              <ReactTags
+                className="w-full p-5"
                 tags={tags}
                 handleDelete={handleDelete}
                 handleAddition={handleAddition}
                 handleDrag={handleDrag}
                 placeholder="Add new tag"
                 classNames={{
-                  tagInput:
-                    "w-full  border border-gray-300 rounded-lg  text-gray-500 focus:outline-none",
-                  tag: " text-black px-2 py-1 rounded-lg mr-2",
+                  tagInput: "w-full border border-gray-300 rounded-lg text-gray-500 focus:outline-none",
+                  tag: "text-black px-2 py-1 rounded-lg mr-2",
                   remove: "cursor-pointer bg-red-600 text-sm ml-1",
                 }}
               />
@@ -154,11 +154,11 @@ const {
 
             {/* External Links */}
             <div className="mb-4">
-              <label className="block text-gray-600 font-semibold mb-2">
-                External Links
-              </label>
+              <label className="block text-gray-600 font-semibold mb-2">External Links</label>
               <input
-                type="url" {...register("externalLink")}
+                type="url"
+                {...register("externalLink")}
+                defaultValue={product?.externalLink || ""}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EACABE] focus:outline-none"
                 placeholder="Enter Website or Landing Page URL"
               />
@@ -181,4 +181,3 @@ const {
 };
 
 export default UpdateProduct;
-

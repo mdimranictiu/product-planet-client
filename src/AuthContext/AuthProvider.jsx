@@ -10,16 +10,16 @@ export const AuthContext =createContext(null)
 
 const AuthProvider = ({children}) => {
     const [user,setUser]=useState(null)
-    const [loading,setloading]=useState(true)
+    const [loading,setLoading]=useState(true)
     const axiosPublic=UseAxiosPublic()
     // sign up
     const createuser=(email,password)=>{
-        setloading(true)
+        setLoading(true)
         return createUserWithEmailAndPassword(auth,email,password)
     }
     // sing in
     const signInUser=(email,password)=>{
-        setloading(true)
+        setLoading(true)
         return signInWithEmailAndPassword(auth,email,password)
     }
     // Social Login/Register
@@ -30,7 +30,7 @@ const AuthProvider = ({children}) => {
   
       // sign out
       const logOut=()=>{
-        setloading(true)
+        setLoading(true)
         return signOut(auth)
     }
     // survilance 
@@ -38,17 +38,26 @@ const AuthProvider = ({children}) => {
         const unSubscribe= onAuthStateChanged(auth,currentUser=>{
             if(currentUser){
                 const userInfo= {email: currentUser.email};
+                axiosPublic.post('/users',userInfo)
+                .then((res)=>{
+                    if(res.data.insertedId){
+                        console.log('userCreated')
+                    }
+                })
+                .catch((error)=>{
+                    console.log(error.message)
+                })
                 axiosPublic.post('/jwt',userInfo)
                 .then((res)=>{
                     if(res.data.token){
                         localStorage.setItem('access-token',res.data.token)
-                        setloading(false)
+                        setLoading(false)
                     }
                 })
             }
             else{
                 localStorage.removeItem('access-token');
-                setloading(false)
+                setLoading(false)
             }
              console.log('Current User', currentUser);
              setUser(currentUser);
@@ -61,7 +70,7 @@ const AuthProvider = ({children}) => {
    
 
     const authInfo={
-        user,loading,createuser,signInUser,signInWithGoogle,logOut,setloading
+        user,loading,createuser,signInUser,signInWithGoogle,logOut,setLoading
     }
     return (
        <AuthContext.Provider value={authInfo}>
