@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { WithContext as ReactTags ,SEPARATORS} from "react-tag-input";
 import useAuth from "../../../hook/useAuth";
 import { useForm } from "react-hook-form"
-import UseAxiosSecure from "../../../hook/useAxiosSecure/UseAxiosSecure";
 import Swal from "sweetalert2";
+import UseAxiosSecure from "../../../hook/useAxiosSecure/useAxiosSecure";
 
 const AddProduct = () => {
   const { user } = useAuth();

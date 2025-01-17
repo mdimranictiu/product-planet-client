@@ -7,11 +7,15 @@ import Register from "../Pages/Register/Register";
 import Login from "../Pages/Login/Login";
 import PrivateRoute from "./PrivateRoute/PrivateRoute";
 import Dashboard from "../Layout/Dashboard/Dashboard";
-import Welcome from "../Pages/Dashboard/Welcome/Welcome";
 import MyProfile from "../Pages/Dashboard/UserHome/MyProfile";
 import AddProduct from "../Pages/Dashboard/UserHome/AddProduct";
 import MyProducts from "../Pages/Dashboard/UserHome/MyProducts";
 import UpdateProduct from "../Pages/Dashboard/UserHome/UpdateProduct";
+import UserHome from "../Pages/Dashboard/UserHome/UserHome";
+import ModeratorHome from "../Pages/Dashboard/ModeratorHome/ModeratorHome";
+import PrivateModerator from "./PrivateModerator/PrivateModerator";
+import ProductReviewQueue from "../Pages/Dashboard/ModeratorHome/ProductReviewQueue";
+// import PrivateModerator from "./PrivateModerator/PrivateModerator";
 
 
 export const router = createBrowserRouter([
@@ -38,9 +42,10 @@ export const router = createBrowserRouter([
       path:'/dashboard',
       element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>,
       children:[
+        //user
         {
-          path:'',
-          element: <Welcome></Welcome>
+          path:'UserHome',
+          element: <UserHome></UserHome>
         },
         {
           path:'MyProfile',
@@ -57,6 +62,17 @@ export const router = createBrowserRouter([
         {
           path:'UpdateProduct',
           element: <UpdateProduct></UpdateProduct>
+        },
+        // for moderator
+        {
+            path: 'moderatorHome',
+            element: <ModeratorHome></ModeratorHome>
+
+        },
+        {
+            path: 'productReview',
+            element: <PrivateModerator><ProductReviewQueue></ProductReviewQueue></PrivateModerator>
+
         }
       ]
     }

@@ -1,8 +1,9 @@
-import React from 'react';
-import useAuth from '../../../hook/useAuth';
+import React, { useContext } from 'react';
+import { AuthContext } from '../../../AuthContext/AuthProvider';
 
-const Welcome = () => {
-    const {user}=useAuth();
+
+const UserHome= () => {
+const {user}=useContext(AuthContext)
     console.log('auth ' ,user)
     return (
         <div className='bg-[#111827] min-h-screen'>
@@ -15,4 +16,4 @@ const Welcome = () => {
     );
 };
 
-export default Welcome;
+export default UserHome;

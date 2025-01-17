@@ -19,8 +19,8 @@ const Dashboard = () => {
     navigate('/');
     
   }
-  const moderator = useModerator();
-  console.log(moderator?.moderator)
+  const [isModerator,isModeratorLoading] = useModerator();
+
     return (
         <div>
             
@@ -31,11 +31,16 @@ const Dashboard = () => {
             <h2 className=''>Dashboard</h2>
             </div>
            <ul className='font-bold text-xl  space-y-2 '>
-            {moderator?.moderator ? 
+            {isModerator ? 
             (
               <>
                <li className='py-3'>
-                  <NavLink className='flex gap-2 items-center' to="/dashboard">
+                  <NavLink className='flex gap-2 items-center' to="/dashboard/moderatorHome">
+                    <FaHome></FaHome><p>Home</p>
+                  </NavLink>
+                </li>
+               <li className='py-3'>
+                  <NavLink className='flex gap-2 items-center' to="/dashboard/productReview">
                     <FaHome></FaHome><p>Product Review Queue </p>
                   </NavLink>
                 </li>
@@ -49,7 +54,7 @@ const Dashboard = () => {
             :
             (<>
             <li className='py-3'>
-                  <NavLink className='flex gap-2 items-center' to="/dashboard">
+                  <NavLink className='flex gap-2 items-center' to="/dashboard/UserHome">
                     <FaHome></FaHome><p>Home</p>
                   </NavLink>
                 </li>

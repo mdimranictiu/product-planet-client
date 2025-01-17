@@ -1,23 +1,24 @@
-import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../AuthContext/AuthProvider";
-import UseAxiosSecure from "./useAxiosSecure/UseAxiosSecure";
+import { useQuery } from "@tanstack/react-query";
+import useAuth from "./useAuth";
+import UseAxiosSecure from "./useAxiosSecure/useAxiosSecure";
 
 
 const useModerator = () => {
-    const { user } = useContext(AuthContext);
+    const { user,loading } = useAuth();
     const axiosSecure = UseAxiosSecure();
-    const [moderator, setModerator] = useState(null);
 
-    useEffect(() => {
-        if (user?.email) {
-            axiosSecure
-                .get(`/users/moderator/${user.email}`)
-                .then((res) => setModerator(res.data))
-                .catch((error) => console.log("moderator error", error));
-        }
-    }, [user?.email, axiosSecure]);
+    // Using TanStack Query
+    const { data: isModerator, isPending: isModeratorLoading } = useQuery({
+        queryKey: [user?.email, "isModerator"],
+        enabled: !loading,
+        queryFn: async () => {
+            const res = await axiosSecure.get(`/users/moderator/${user.email}`);
+            return res.data?.moderator;
+        },
+        // Only enable query if user email exists
+    });
 
-    return moderator;
+    return [isModerator, isModeratorLoading];
 };
 
 export default useModerator;
