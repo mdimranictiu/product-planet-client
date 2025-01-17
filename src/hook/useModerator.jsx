@@ -12,7 +12,7 @@ const useModerator = () => {
         queryKey: [user?.email, "isModerator"],
         enabled: !loading,
         queryFn: async () => {
-            const res = await axiosSecure.get(`/users/moderator/${user.email}`);
+            const res = await axiosSecure.get(`/users/moderator/${user?.email}`);
             return res.data?.moderator;
         },
         // Only enable query if user email exists

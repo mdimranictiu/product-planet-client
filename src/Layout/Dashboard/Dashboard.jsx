@@ -45,7 +45,7 @@ const Dashboard = () => {
                   </NavLink>
                 </li>
                 <li className='py-3'>
-                  <NavLink className='flex gap-2 items-center' to="/dashboard/MyProfile">
+                  <NavLink className='flex gap-2 items-center' to="/dashboard/reportedContent">
                     <FaUserCircle></FaUserCircle><p>Reported Contents </p>
                   </NavLink>
                 </li>

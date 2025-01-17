@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { WithContext as ReactTags, SEPARATORS } from "react-tag-input";
 import useAuth from "../../../hook/useAuth";
 import { useForm } from "react-hook-form";
-import UseAxiosSecure from "../../../hook/useAxiosSecure/UseAxiosSecure";
+
 import Swal from "sweetalert2";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../AuthContext/AuthProvider";
+import UseAxiosSecure from "../../../hook/useAxiosSecure/useAxiosSecure";
 
 const UpdateProduct = () => {
   const { user } = useAuth();
@@ -55,7 +56,7 @@ const {loading,setLoading}=useContext(AuthContext)
 
   const onSubmit = (data) => {
     const updateProduct = {
-      ...data,
+      ...data, status: 'pending',
       tags,
     };
     axiosSecure
@@ -72,7 +73,7 @@ const {loading,setLoading}=useContext(AuthContext)
         }
       })
       .catch((error) => {
-        const errorMessage = error.message || "An unknown error occurred.";
+        const errorMessage = error.message ;
         Swal.fire({
           icon: "error",
           title: "Failed to Update Product",
@@ -97,7 +98,7 @@ const {loading,setLoading}=useContext(AuthContext)
               <input
                 type="text"
                 {...register("productName")}
-                defaultValue={product?.productName || ""}
+                defaultValue={product?.productName }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EACABE] focus:outline-none"
                 placeholder="Enter Product Name"
                 required
@@ -112,7 +113,7 @@ const {loading,setLoading}=useContext(AuthContext)
               <input
                 type="text"
                 {...register("productPhotoURL")}
-                defaultValue={product?.productPhotoURL || ""}
+                defaultValue={product?.productPhotoURL}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EACABE] focus:outline-none"
                 placeholder="Enter Product Image URL"
                 required
@@ -126,7 +127,7 @@ const {loading,setLoading}=useContext(AuthContext)
               </label>
               <textarea
                 {...register("productDescription")}
-                defaultValue={product?.productDescription || ""}
+                defaultValue={product?.productDescription}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EACABE] focus:outline-none"
                 placeholder="Enter Product Description"
                 rows="4"
@@ -158,7 +159,7 @@ const {loading,setLoading}=useContext(AuthContext)
               <input
                 type="url"
                 {...register("externalLink")}
-                defaultValue={product?.externalLink || ""}
+                defaultValue={product?.externalLink}
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EACABE] focus:outline-none"
                 placeholder="Enter Website or Landing Page URL"
               />

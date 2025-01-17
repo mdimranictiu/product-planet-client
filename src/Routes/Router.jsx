@@ -15,6 +15,7 @@ import UserHome from "../Pages/Dashboard/UserHome/UserHome";
 import ModeratorHome from "../Pages/Dashboard/ModeratorHome/ModeratorHome";
 import PrivateModerator from "./PrivateModerator/PrivateModerator";
 import ProductReviewQueue from "../Pages/Dashboard/ModeratorHome/ProductReviewQueue";
+import ReportedContent from "../Pages/Dashboard/ModeratorHome/ReportedContent";
 // import PrivateModerator from "./PrivateModerator/PrivateModerator";
 
 
@@ -71,7 +72,12 @@ export const router = createBrowserRouter([
         },
         {
             path: 'productReview',
-            element: <PrivateModerator><ProductReviewQueue></ProductReviewQueue></PrivateModerator>
+            element: <ProductReviewQueue></ProductReviewQueue>
+
+        },
+        {
+            path: 'reportedContent',
+            element: <ReportedContent></ReportedContent>
 
         }
       ]
