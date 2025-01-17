@@ -118,7 +118,7 @@ const ReportedContent = () => {
       {product.productName}
     </td>
     <td className="border border-gray-300 px-4 py-2 text-center">
-      <Link to="/" state={{ productId: product._id }}>
+      <Link to="/dashboard/productDetails" state={{ productId: product._id }}>
         <button className="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition duration-300">
           Details
         </button>

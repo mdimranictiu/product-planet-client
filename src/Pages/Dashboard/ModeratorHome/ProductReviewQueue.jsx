@@ -50,6 +50,31 @@ const ProductReviewQueue = () => {
   
     console.log(`Product ${id} status changed to ${status}.`);
   };
+  const handleMakeFeature = (id) => {
+    const productStatus = { feature: true };
+  
+    axiosSecure
+      .patch(`/makeProductAsFeature/${id}`, productStatus)
+      .then((res) => {
+        if (res.data.modifiedCount) {
+          console.log("Updated feature status");
+  
+          // Update the feature status in the local UI state
+          setProducts((prevProducts) =>
+            prevProducts.map((product) =>
+              product._id === id ? { ...product, feature: true } : product
+            )
+          );
+        }
+      })
+      .catch((error) => {
+        Swal.fire({
+          icon: "error",
+          title: "Failed to mark as Feature",
+          text: error.message,
+        });
+      });
+  };
   return (
     <div className="flex justify-center py-10 min-h-screen bg-gray-100">
       <div className="w-full max-w-7xl bg-gradient-to-r from-[#1F2937] to-[#33435a] shadow-lg rounded-lg p-8">
@@ -94,11 +119,13 @@ const ProductReviewQueue = () => {
       </Link>
     </td>
     <td className="border border-gray-300 px-4 py-2 text-center">
-      <Link to="/" state={{ productId: product._id }}>
-        <button className="px-4 py-2 bg-purple-500 text-white rounded shadow hover:bg-purple-600 transition duration-300">
-          Make Feature
+      
+        <button
+         onClick={()=>handleMakeFeature(product._id)}
+         className="px-4 py-2 bg-purple-500 text-white rounded shadow hover:bg-purple-600 transition duration-300">
+          {product?.feature ? "Featured": 'Make Feature'}
         </button>
-      </Link>
+     
     </td>
     <td className="border border-gray-300 px-4 py-2 text-center">
     <button

@@ -16,6 +16,7 @@ import ModeratorHome from "../Pages/Dashboard/ModeratorHome/ModeratorHome";
 import PrivateModerator from "./PrivateModerator/PrivateModerator";
 import ProductReviewQueue from "../Pages/Dashboard/ModeratorHome/ProductReviewQueue";
 import ReportedContent from "../Pages/Dashboard/ModeratorHome/ReportedContent";
+import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 // import PrivateModerator from "./PrivateModerator/PrivateModerator";
 
 
@@ -36,7 +37,11 @@ export const router = createBrowserRouter([
         {
             path: '/login',
             element: <Login></Login>
+        },{
+          path: '/productDetails',
+          element: <PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
         }
+        
       ]
     },
     {
@@ -79,6 +84,10 @@ export const router = createBrowserRouter([
             path: 'reportedContent',
             element: <ReportedContent></ReportedContent>
 
+        },
+        ,{
+          path: 'productDetails',
+          element: <PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
         }
       ]
     }
