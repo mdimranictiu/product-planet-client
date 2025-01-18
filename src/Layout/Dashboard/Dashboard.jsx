@@ -24,7 +24,7 @@ const Dashboard = () => {
     return (
         <div>
             
-            <div className="flex  text-white bg-[#1F2937]">
+            <div className="flex   text-white bg-[#1F2937]">
            <div className='p-10 px-22'>
             <div className='flex gap-5 mb-10 items-center text-2xl'>
             <MdDashboardCustomize></MdDashboardCustomize>
