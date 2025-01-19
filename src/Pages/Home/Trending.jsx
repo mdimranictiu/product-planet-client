@@ -5,7 +5,7 @@ import UseAxiosPublic from "../../hook/useAxiosPublic/UseAxiosPublic";
 import { AuthContext } from "../../AuthContext/AuthProvider";
 import UseAxiosSecure from "../../hook/useAxiosSecure/useAxiosSecure";
 
-const Feature = () => {
+const Trending = () => {
   const [products, setProducts] = useState([]);
   const [upvoteErrors, setUpvoteErrors] = useState({});
   const axiosPublic = UseAxiosPublic();
@@ -24,7 +24,7 @@ const Feature = () => {
 
   useEffect(() => {
     axiosPublic
-      .get("/feature-product")
+      .get("/trending-product")
       .then((res) => {
         setProducts(res.data);
       })
@@ -85,7 +85,7 @@ const Feature = () => {
   return (
     <div className="py-10 w-4/5 mx-auto px-10">
         <div>
-            <h2 className="text-center font-bold text-3xl py-10">Feature Products</h2>
+            <h2 className="text-center font-bold text-3xl py-10">Trending Products</h2>
         </div>
       <div className="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-5">
         {products?.map((product) => (
@@ -148,8 +148,17 @@ const Feature = () => {
           </div>
         ))}
       </div>
+      <div className="py-10 text-center text-xl font-semibold">
+  <Link to="/products">
+    <button className="px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:bg-blue-600 hover:scale-105 focus:ring-4 focus:ring-[#c27329]/50">
+      Show All Products
+    </button>
+  </Link>
+</div>
     </div>
   );
 };
 
-export default Feature;
+
+
+export default Trending;
