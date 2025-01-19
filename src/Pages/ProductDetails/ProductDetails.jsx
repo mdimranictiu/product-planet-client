@@ -19,6 +19,7 @@ const ProductDetails = () => {
   const [upvoteError, setUpvoteError] = useState("");
   const [reportError, setReportError] = useState("");
   const [reviews, setreviews] = useState([]);
+  const [refetch,Setrefetch]=useState(false)
   const location = useLocation();
   // after showing error clear it.
   useEffect(() => {
@@ -57,12 +58,14 @@ const ProductDetails = () => {
         .get(`/find/review/${productId}`)
         .then((res) => {
           setreviews(res.data);
+          Setrefetch(false)
         })
         .catch((error) => {
           console.log(error.message);
+          Setrefetch(false)
         });
     }
-  }, [location?.state?.productId]);
+  }, [location?.state?.productId,refetch]);
   console.log(reviews);
   // upvote logic
   const handleUpvote = () => {
@@ -185,6 +188,7 @@ const ProductDetails = () => {
         if (res.data.insertedId) {
           console.log("add review successfully");
           setSuccess("Review added successfully!");
+          Setrefetch(true)
           reset();
         }
       })
@@ -205,6 +209,7 @@ const ProductDetails = () => {
             Product Details
           </h2>
           <div className="py-10">
+            
             <div className="w-[320px] max-w-full h-[220px] mx-auto overflow-hidden rounded-lg shadow-lg">
               <img
                 src={product?.productPhotoURL}

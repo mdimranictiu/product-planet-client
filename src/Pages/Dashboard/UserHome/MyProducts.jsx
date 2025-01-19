@@ -93,7 +93,7 @@ const MyProducts = () => {
                           {product.productName}
                         </td>
                         <td className="border border-gray-300 px-4 py-2">
-                          {product.votes || 0}
+                          {product?.upvoteCount || 0}
                         </td>
                         <td
                           className={`border  px-4 py-2 capitalize ${
