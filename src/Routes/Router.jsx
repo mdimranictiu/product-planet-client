@@ -21,6 +21,7 @@ import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome";
 import PrivateAdmin from "./privateAdmin/PrivateAdmin";
 import ManageUsers from "../Pages/Dashboard/AdminHome/ManageUsers";
 import MakePayment from "../Pages/Dashboard/UserHome/Payment/MakePayment";
+import Products from "../Pages/Products/Products";
 
 
 export const router = createBrowserRouter([
@@ -44,7 +45,10 @@ export const router = createBrowserRouter([
           path: '/productDetails',
           element: <PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
         }
-        ,
+        ,{
+          path:'/products',
+          element: <Products></Products>
+        }
         
       ]
     },

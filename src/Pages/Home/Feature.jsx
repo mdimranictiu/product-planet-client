@@ -83,7 +83,7 @@ const Feature = () => {
   };
 
   return (
-    <div className="py-10 w-4/5 mx-auto px-10">
+    <div className="py-10 max-sm:w-full max-md:w-full w-4/5 mx-auto px-10">
         <div>
             <h2 className="text-center font-bold text-3xl py-10">Feature Products</h2>
         </div>
@@ -91,7 +91,7 @@ const Feature = () => {
         {products?.map((product) => (
           <div
             key={product._id}
-            className="max-w-sm bg-[#cde7e6] rounded-xl py-5 overflow-hidden shadow-lg"
+            className="max-w-sm bg-white rounded-xl py-5 overflow-hidden shadow-lg"
           >
             <div className="w-4/5  mx-auto h-[200px] my-5 rounded-xl">
               <img
