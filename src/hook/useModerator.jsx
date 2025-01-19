@@ -10,7 +10,7 @@ const useModerator = () => {
     // Using TanStack Query
     const { data: isModerator, isPending: isModeratorLoading } = useQuery({
         queryKey: [user?.email, "isModerator"],
-        enabled: !loading,
+        enabled: !loading && !!user?.email,
         queryFn: async () => {
             const res = await axiosSecure.get(`/users/moderator/${user?.email}`);
             return res.data?.moderator;

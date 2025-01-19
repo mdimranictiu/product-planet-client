@@ -1,12 +1,14 @@
 import React, { useContext } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import NavBar from '../../Shared/NavBar/NavBar';
 import { FaHome, FaUserCircle } from 'react-icons/fa';
 import { MdDashboardCustomize, MdLogout } from 'react-icons/md';
 import { IoAddCircle } from 'react-icons/io5';
 import { FaBox } from "react-icons/fa";
 import { AuthContext } from '../../AuthContext/AuthProvider';
 import useModerator from '../../hook/useModerator';
+import useAdmin from '../../hook/useAdmin';
+import { RiCoupon3Fill } from 'react-icons/ri';
+import { FcStatistics } from 'react-icons/fc';
 
 
 
@@ -20,6 +22,8 @@ const Dashboard = () => {
     
   }
   const [isModerator,isModeratorLoading] = useModerator();
+  const [isAdmin,isAdminLoading]=useAdmin()
+  console.log('isadmin from dashboard',isAdmin)
 
     return (
         <div>
@@ -30,55 +34,69 @@ const Dashboard = () => {
             <MdDashboardCustomize></MdDashboardCustomize>
             <h2 className=''>Dashboard</h2>
             </div>
-           <ul className='font-bold text-xl  space-y-2 '>
-            {isModerator ? 
-            (
-              <>
-               <li className='py-3'>
-                  <NavLink className='flex gap-2 items-center' to="/dashboard/moderatorHome">
-                    <FaHome></FaHome><p>Home</p>
-                  </NavLink>
-                </li>
-               <li className='py-3'>
-                  <NavLink className='flex gap-2 items-center' to="/dashboard/productReview">
-                    <FaHome></FaHome><p>Product Review Queue </p>
-                  </NavLink>
-                </li>
-                <li className='py-3'>
-                  <NavLink className='flex gap-2 items-center' to="/dashboard/reportedContent">
-                    <FaUserCircle></FaUserCircle><p>Reported Contents </p>
-                  </NavLink>
-                </li>
-              </>
-            )
-            :
-            (<>
-            <li className='py-3'>
-                  <NavLink className='flex gap-2 items-center' to="/dashboard/UserHome">
-                    <FaHome></FaHome><p>Home</p>
-                  </NavLink>
-                </li>
-                <li className='py-3'>
-                  <NavLink className='flex gap-2 items-center' to="/dashboard/MyProfile">
-                    <FaUserCircle></FaUserCircle><p>My Profile</p>
-                  </NavLink>
-                </li>
-                <li className='py-3'>
-                  <NavLink className='flex gap-2 items-center' to="/dashboard/AddProduct">
-                    <IoAddCircle></IoAddCircle><p>Add Product</p>
-                  </NavLink>
-                </li>
-                <li className='py-3'>
-                  <NavLink className='flex gap-2 items-center' to="/dashboard/MyProducts">
-                    <FaBox></FaBox><p>My Products</p>
-                  </NavLink>
-                </li>
-            </>)
-            }
-                
-                
-  
-              </ul>
+            <ul className='font-bold text-xl space-y-2'>
+  {isAdmin ? (
+    <>
+      <li className='py-3'>
+        <NavLink className='flex gap-2 items-center' to="/dashboard/adminHome">
+          <FcStatistics /><p>Statistics Page</p>
+        </NavLink>
+      </li>
+      <li className='py-3'>
+        <NavLink className='flex gap-2 items-center' to="/dashboard/manageUsers">
+          <FaUserCircle /><p>Manage Users</p>
+        </NavLink>
+      </li>
+      <li className='py-3'>
+        <NavLink className='flex gap-2 items-center' to="/dashboard/manageCoupons">
+          <RiCoupon3Fill /><p>Manage Coupons</p>
+        </NavLink>
+      </li>
+    </>
+  ) : isModerator ? (
+    <>
+      <li className='py-3'>
+        <NavLink className='flex gap-2 items-center' to="/dashboard/moderatorHome">
+          <FaHome /><p>Moderator Home</p>
+        </NavLink>
+      </li>
+      <li className='py-3'>
+        <NavLink className='flex gap-2 items-center' to="/dashboard/productReview">
+          <FaHome /><p>Product Review Queue</p>
+        </NavLink>
+      </li>
+      <li className='py-3'>
+        <NavLink className='flex gap-2 items-center' to="/dashboard/reportedContent">
+          <FaUserCircle /><p>Reported Contents</p>
+        </NavLink>
+      </li>
+    </>
+  ) : (
+    <>
+      <li className='py-3'>
+        <NavLink className='flex gap-2 items-center' to="/dashboard/UserHome">
+          <FaHome /><p>User Home</p>
+        </NavLink>
+      </li>
+      <li className='py-3'>
+        <NavLink className='flex gap-2 items-center' to="/dashboard/MyProfile">
+          <FaUserCircle /><p>My Profile</p>
+        </NavLink>
+      </li>
+      <li className='py-3'>
+        <NavLink className='flex gap-2 items-center' to="/dashboard/AddProduct">
+          <IoAddCircle /><p>Add Product</p>
+        </NavLink>
+      </li>
+      <li className='py-3'>
+        <NavLink className='flex gap-2 items-center' to="/dashboard/MyProducts">
+          <FaBox /><p>My Products</p>
+        </NavLink>
+      </li>
+    </>
+  )}
+</ul>
+
               <div className="py-32">
     <ul className='flex flex-col  gap-6 text-xl'>
       <li className=" bg-gradient-to-r bg-[#1fd8a0] px-4 py-3 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300">

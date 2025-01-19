@@ -6,6 +6,7 @@ import { RiMenu2Line } from "react-icons/ri";
 import { MdClose } from "react-icons/md";
 import { AuthContext } from "../../AuthContext/AuthProvider";
 import useModerator from "../../hook/useModerator";
+import useAdmin from "../../hook/useAdmin";
 
 const NavBar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -13,7 +14,9 @@ const NavBar = () => {
   const menuClickRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModerator,isModeratorLoading] = useModerator();
-  console.log(isModerator)
+  const [isAdmin,isAdminLoading]=useAdmin()
+  console.log('navbar',isModerator)
+  console.log('navbar',isAdmin)
 
   const [dropdownOpen, setdropdownOpen] = useState(false);
   const dropdowntoggle = () => {
@@ -74,7 +77,7 @@ const NavBar = () => {
             className="rounded-full w-12 h-12 bg-gray-500"
           >
             <img
-              src={user.photoURL}
+              src={user?.photoURL}
               alt="Profile"
               className="w-full h-full rounded-full object-cover"
             />
@@ -85,14 +88,22 @@ const NavBar = () => {
               <div className="px-4 py-2">
                 <p className=" font-medium">{user.displayName}</p>
               </div>
-              <ul className="py-1">
+              {user &&
+              (
+                <ul className="py-1">
                 {user && isModerator && (
                   <li className="flex items-center px-4 py-2">
                     <MdDashboardCustomize className="mr-2" />
                     <Link to="/dashboard/ModeratorHome">Dashboard</Link>
                   </li>
                 )}
-                {user && !isModerator && (
+                {user && isAdmin && (
+                  <li className="flex items-center px-4 py-2">
+                    <MdDashboardCustomize className="mr-2" />
+                    <Link to="/dashboard/adminHome">Dashboard</Link>
+                  </li>
+                )}
+                {user && !isModerator && !isAdmin && (
                   <li className="flex items-center px-4 py-2">
                     <MdDashboardCustomize className="mr-2" />
                     <Link to="/dashboard/UserHome">Dashboard</Link>
@@ -106,6 +117,7 @@ const NavBar = () => {
                   <button className=" w-full text-left">Logout</button>
                 </li>
               </ul>
+              )}
             </div>
           )}
         </div>

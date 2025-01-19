@@ -37,12 +37,13 @@ const AuthProvider = ({children}) => {
     useEffect(()=>{
         const unSubscribe= onAuthStateChanged(auth,currentUser=>{
             if(currentUser){
-                const userInfo= {email: currentUser.email};
-                axiosPublic.post('/users',userInfo)
+                const userInfo= {email: currentUser?.email};
+                axiosPublic.post('/users',{email: currentUser?.email,userName:currentUser?.displayName})
                 .then((res)=>{
                     if(res.data.insertedId){
                         console.log('userCreated')
                     }
+                   
                 })
                 .catch((error)=>{
                     console.log(error.message)
@@ -61,6 +62,7 @@ const AuthProvider = ({children}) => {
             }
              console.log('Current User', currentUser);
              setUser(currentUser);
+             
            
          })
          return ()=>{ 

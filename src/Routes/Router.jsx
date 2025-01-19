@@ -17,7 +17,10 @@ import PrivateModerator from "./PrivateModerator/PrivateModerator";
 import ProductReviewQueue from "../Pages/Dashboard/ModeratorHome/ProductReviewQueue";
 import ReportedContent from "../Pages/Dashboard/ModeratorHome/ReportedContent";
 import ProductDetails from "../Pages/ProductDetails/ProductDetails";
-// import PrivateModerator from "./PrivateModerator/PrivateModerator";
+import AdminHome from "../Pages/Dashboard/AdminHome/AdminHome";
+import PrivateAdmin from "./privateAdmin/PrivateAdmin";
+import ManageUsers from "../Pages/Dashboard/AdminHome/ManageUsers";
+import MakePayment from "../Pages/Dashboard/UserHome/Payment/MakePayment";
 
 
 export const router = createBrowserRouter([
@@ -69,25 +72,38 @@ export const router = createBrowserRouter([
           path:'UpdateProduct',
           element: <UpdateProduct></UpdateProduct>
         },
+        {
+          path:'payment',
+          element: <MakePayment></MakePayment>
+        },
         // for moderator
         {
             path: 'moderatorHome',
-            element: <ModeratorHome></ModeratorHome>
+            element: <PrivateModerator><ModeratorHome></ModeratorHome></PrivateModerator>
 
         },
         {
             path: 'productReview',
-            element: <ProductReviewQueue></ProductReviewQueue>
+            element: <PrivateModerator><ProductReviewQueue></ProductReviewQueue></PrivateModerator>
 
         },
         {
             path: 'reportedContent',
-            element: <ReportedContent></ReportedContent>
+            element: <PrivateModerator><ReportedContent></ReportedContent></PrivateModerator>
 
         },
         ,{
           path: 'productDetails',
           element: <PrivateRoute><ProductDetails></ProductDetails></PrivateRoute>
+        },
+        // for admin
+        {
+          path: 'adminHome',
+          element: <PrivateAdmin><AdminHome></AdminHome></PrivateAdmin>
+        }
+        ,{
+          path: 'manageUsers',
+          element: <PrivateAdmin> <ManageUsers></ManageUsers></PrivateAdmin>
         }
       ]
     }
