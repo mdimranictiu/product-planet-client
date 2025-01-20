@@ -22,6 +22,8 @@ import PrivateAdmin from "./privateAdmin/PrivateAdmin";
 import ManageUsers from "../Pages/Dashboard/AdminHome/ManageUsers";
 import MakePayment from "../Pages/Dashboard/UserHome/Payment/MakePayment";
 import Products from "../Pages/Products/Products";
+import CouponPage from "../Pages/Dashboard/AdminHome/CouponPage";
+import UpdateCoupon from "../Pages/Dashboard/AdminHome/UpdateCoupon";
 
 
 export const router = createBrowserRouter([
@@ -109,6 +111,13 @@ export const router = createBrowserRouter([
         ,{
           path: 'manageUsers',
           element: <PrivateAdmin> <ManageUsers></ManageUsers></PrivateAdmin>
+        }
+        ,{
+          path:'manageCoupons',
+          element: <PrivateAdmin><CouponPage></CouponPage></PrivateAdmin>
+        },{
+          path:'updateCoupon',
+          element: <PrivateAdmin><UpdateCoupon></UpdateCoupon></PrivateAdmin>
         }
       ]
     }

@@ -15,8 +15,6 @@ const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [isModerator, isModeratorLoading] = useModerator();
   const [isAdmin, isAdminLoading] = useAdmin();
-  console.log("navbar", isModerator);
-  console.log("navbar", isAdmin);
 
   const [dropdownOpen, setdropdownOpen] = useState(false);
   const dropdowntoggle = () => {
@@ -35,18 +33,7 @@ const NavBar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-  // useEffect(()=>{
-  //   const handleClickMenuOutside=(event)=>{
-  //       if(menuClickRef.current && !menuClickRef.current.contains(event.target)){
-  //           setMenuOpen(false)
-  //       }
-  //   }
-  //   document.addEventListener('mousedown',handleClickMenuOutside);
-  //   return ()=>{
-  //       document.removeEventListener('mousedown',handleClickMenuOutside)
-  //   }
 
-  // },[])
   const handleSignOut = () => {
     logOut();
   };
