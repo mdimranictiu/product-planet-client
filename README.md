@@ -24,7 +24,7 @@ I hope you enjoy the website.
 - **Backend**: Node.js, Express  
 - **Database**: MongoDB  
 - **Build Tool**: VS Code 
-- **Payment Integration**: Stripe or PayPal  
+- **Payment Integration**: Stripe 
 
 ## 🌐 Live Site  
 

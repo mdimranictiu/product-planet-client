@@ -13,10 +13,10 @@ const NavBar = () => {
   const dropdownRef = useRef(null);
   const menuClickRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isModerator,isModeratorLoading] = useModerator();
-  const [isAdmin,isAdminLoading]=useAdmin()
-  console.log('navbar',isModerator)
-  console.log('navbar',isAdmin)
+  const [isModerator, isModeratorLoading] = useModerator();
+  const [isAdmin, isAdminLoading] = useAdmin();
+  console.log("navbar", isModerator);
+  console.log("navbar", isAdmin);
 
   const [dropdownOpen, setdropdownOpen] = useState(false);
   const dropdowntoggle = () => {
@@ -88,35 +88,39 @@ const NavBar = () => {
               <div className="px-4 py-2">
                 <p className=" font-medium">{user.displayName}</p>
               </div>
-              {user &&
-              (
+              {user && (
                 <ul className="py-1">
-                {user && isModerator && (
-                  <li className="flex items-center px-4 py-2">
-                    <MdDashboardCustomize className="mr-2" />
-                    <Link to="/dashboard/ModeratorHome">Dashboard</Link>
+                  {user && (
+                    <>
+                      {isModerator && (
+                        <li className="flex items-center px-4 py-2">
+                          <MdDashboardCustomize className="mr-2" />
+                          <Link to="/dashboard/ModeratorHome">Dashboard</Link>
+                        </li>
+                      )}
+                      {isAdmin && (
+                        <li className="flex items-center px-4 py-2">
+                          <MdDashboardCustomize className="mr-2" />
+                          <Link to="/dashboard/adminHome">Dashboard</Link>
+                        </li>
+                      )}
+                      {!isModerator && !isAdmin && (
+                        <li className="flex items-center px-4 py-2">
+                          <MdDashboardCustomize className="mr-2" />
+                          <Link to="/dashboard/UserHome">Dashboard</Link>
+                        </li>
+                      )}
+                    </>
+                  )}
+
+                  <li
+                    onClick={handleSignOut}
+                    className="flex items-center px-4 py-2"
+                  >
+                    <MdLogout className="mr-2" />
+                    <button className=" w-full text-left">Logout</button>
                   </li>
-                )}
-                {user && isAdmin && (
-                  <li className="flex items-center px-4 py-2">
-                    <MdDashboardCustomize className="mr-2" />
-                    <Link to="/dashboard/adminHome">Dashboard</Link>
-                  </li>
-                )}
-                {user && !isModerator && !isAdmin && (
-                  <li className="flex items-center px-4 py-2">
-                    <MdDashboardCustomize className="mr-2" />
-                    <Link to="/dashboard/UserHome">Dashboard</Link>
-                  </li>
-                )}
-                <li
-                  onClick={handleSignOut}
-                  className="flex items-center px-4 py-2"
-                >
-                  <MdLogout className="mr-2" />
-                  <button className=" w-full text-left">Logout</button>
-                </li>
-              </ul>
+                </ul>
               )}
             </div>
           )}
@@ -156,7 +160,10 @@ const NavBar = () => {
             ></RiMenu2Line>
           </div>
           <Link to="/">
-            <h2 className="text-3xl max-sm:text-xl  font-bold"  style={{ fontFamily: "'Dancing Script', serif" }}>
+            <h2
+              className="text-3xl max-sm:text-xl  font-bold"
+              style={{ fontFamily: "'Dancing Script', serif" }}
+            >
               Product Planet
             </h2>
           </Link>
