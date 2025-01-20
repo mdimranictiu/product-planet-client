@@ -49,7 +49,7 @@ document.title= `${user?.displayName} Home`
                         Welcome back, {user?.displayName}!
             </h2>
             <div className=' my-10'>
-              <div className='grid grid-cols-3 px-10 py-10 max-sm:px-2 max-sm:py-5 gap-5 max-md:grid-cols-2 max-sm:grid-cols-1'>
+              <div className='grid text-center grid-cols-3 px-10 py-10 max-sm:px-2 max-sm:py-5 gap-5 max-md:grid-cols-2 max-sm:grid-cols-1'>
                 <div className='h-[220px] flex flex-col gap-5 items-center justify-center rounded-xl bg-[#0D9488]'>
                   <FaBox className='text-4xl'></FaBox>
                   <h2 className='text-2xl font-bold'>My Products</h2>
