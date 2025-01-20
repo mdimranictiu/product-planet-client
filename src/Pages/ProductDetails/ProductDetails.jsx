@@ -48,6 +48,7 @@ const ProductDetails = () => {
         });
     }
   }, [location?.state?.productId]);
+  document.title=`${product?.productName} Details`
   console.log(product);
   // find reviews about the product
   useEffect(() => {

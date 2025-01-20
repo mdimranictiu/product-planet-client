@@ -89,7 +89,8 @@ const Products = () => {
   const handlePreviousPage = () => {
     if (currentPage > 1) setCurrentPage((prev) => prev - 1);
   };
-
+// title
+document.title='products'
   return (
     <div className="py-10 max-sm:w-full w-4/5 mx-auto px-10">
       <div>

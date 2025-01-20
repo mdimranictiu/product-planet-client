@@ -125,7 +125,8 @@ useEffect(()=>{
       });
       
   };
-
+// title
+document.title=`Add Product`
   return (
     <div className="flex justify-center py-10 min-h-screen bg-gray-100">
       <div className="w-full max-w-4xl bg-gradient-to-r from-[#1F2937] to-[#33435a] shadow-lg rounded-lg p-8">
