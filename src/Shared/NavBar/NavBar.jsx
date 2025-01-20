@@ -156,7 +156,7 @@ const NavBar = () => {
             ></RiMenu2Line>
           </div>
           <Link to="/">
-            <h2 className="text-2xl max-sm:text-xl  font-bold">
+            <h2 className="text-3xl max-sm:text-xl  font-bold"  style={{ fontFamily: "'Dancing Script', serif" }}>
               Product Planet
             </h2>
           </Link>
