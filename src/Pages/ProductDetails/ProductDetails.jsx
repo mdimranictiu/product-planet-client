@@ -205,20 +205,20 @@ const ProductDetails = () => {
   return (
     <div className="flex justify-center py-10 min-h-screen bg-gray-100">
       <div className="w-full max-w-5xl shadow-lg rounded-lg p-8">
-        <div className="bg-white text-black mx-auto p-6 rounded-lg shadow-lg">
+        <div className="bg-white text-black mx-auto p-6 rounded-lg ">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
             Product Details
           </h2>
           <div className="py-10">
             
-            <div className="w-[320px] max-w-full h-[220px] mx-auto overflow-hidden rounded-lg shadow-lg">
+            <div className="w-[320px] py-2 max-w-full h-[220px] mx-auto overflow-hidden rounded-lg">
               <img
                 src={product?.productPhotoURL}
                 alt="Product Photo"
                 className="w-full h-full object-cover border-2 border-gray-300 rounded-lg"
               />
             </div>
-            <div className="flex flex-col gap-4 p-4 border rounded shadow-lg">
+            <div className="flex flex-col gap-4 p-4  rounded ">
               {/* Product information*/}
               <h2 className="text-xl font-semibold">
                 <span className="text-gray-700">
@@ -308,7 +308,7 @@ const ProductDetails = () => {
                   {reviews.map((review, index) => (
                     <div
                       key={index}
-                      className="max-w-sm border bg-gray-300 border-gray-200 rounded-lg shadow-md p-6"
+                      className="max-w-sm border bg-gray-300 border-gray-200 rounded-lg  p-6"
                     >
                       {/* Reviewer Image */}
                       <div className="flex justify-center mb-4">
@@ -348,7 +348,7 @@ const ProductDetails = () => {
                     Write A Review
                   </h2>
                   <form
-                    className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg"
+                    className="max-w-4xl mx-auto bg-white p-6 rounded-lg "
                     onSubmit={handleSubmit(onSubmit)}
                   >
                     {/* Reviewer Name and Reviewer Image */}
