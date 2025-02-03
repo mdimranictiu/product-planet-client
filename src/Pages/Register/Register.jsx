@@ -9,7 +9,7 @@ import { updateProfile } from "firebase/auth";
 import Swal from "sweetalert2";
 
 const Register = () => {
-    const {createuser,signInWithGoogle}=useContext(AuthContext);
+    const {createuser,signInWithGoogle,loginWithTwitter,loginWithFacebook}=useContext(AuthContext);
     const navigate=useNavigate();
     const {
         register,
@@ -70,6 +70,32 @@ const Register = () => {
           });
         })
       }
+         const handleFblogin=()=>{
+          loginWithFacebook()
+          .then(()=>{
+            navigate(from)
+          })
+          .catch((error)=>{
+            Swal.fire({
+              icon: "error",
+              title: "Something went wrong!",
+              text: error.message,
+            });
+          })
+         } 
+         const handleTwitterLogin=()=>{
+          loginWithTwitter()
+          .then(()=>{
+            navigate(from)
+          })
+          .catch((error)=>{
+            Swal.fire({
+              icon: "error",
+              title: "Something went wrong!",
+              text: error.message,
+            });
+          })
+         }  
   return (
     <div className="flex justify-center py-10 min-h-screen ">
       <div className="w-full max-w-xl   shadow-[32px] rounded-lg p-8">
@@ -148,7 +174,7 @@ const Register = () => {
   <div className="mt-6">
   <div className="mt-4 flex justify-center gap-10 text-3xl cursor-pointer">
 
-    <FaFacebook
+    <FaFacebook onClick={handleFblogin}
       title="Register with Facebook"
       className="hover:scale-110 text-blue-600 transition-transform duration-300"
     />
@@ -159,7 +185,7 @@ const Register = () => {
     />
     
 
-    <FaXTwitter
+    <FaXTwitter onClick={handleTwitterLogin}
       title="Register with Twitter"
       className="hover:scale-110 text-blue-400 transition-transform duration-300"
     />

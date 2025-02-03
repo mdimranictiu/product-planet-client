@@ -9,7 +9,7 @@ import Swal from "sweetalert2";
 
 
 const Login = () => {
-    const {signInUser,signInWithGoogle}=useContext(AuthContext);
+    const {signInUser,signInWithGoogle,loginWithFacebook,loginWithTwitter}=useContext(AuthContext);
     const location=useLocation();
     const from=location.state?.from?.pathname || '/';
     console.log(from)
@@ -52,6 +52,33 @@ const Login = () => {
                     });
                   })
                 }
+   // sign in with fb
+   const handleFblogin=()=>{
+    loginWithFacebook()
+    .then(()=>{
+      navigate(from)
+    })
+    .catch((error)=>{
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong!",
+        text: error.message,
+      });
+    })
+   } 
+   const handleTwitterLogin=()=>{
+    loginWithTwitter()
+    .then(()=>{
+      navigate(from)
+    })
+    .catch((error)=>{
+      Swal.fire({
+        icon: "error",
+        title: "Something went wrong!",
+        text: error.message,
+      });
+    })
+   }            
   return (
     <div className="flex justify-center py-10 min-h-screen ">
       <div className="w-full max-w-xl   shadow-[32px] rounded-lg p-8">
@@ -116,7 +143,7 @@ const Login = () => {
   <div className="mt-4 flex justify-center gap-10 text-3xl cursor-pointer">
 
     <FaFacebook
-      title="Register with Facebook"
+      title="Register with Facebook" onClick={handleFblogin}
       className="hover:scale-110 text-blue-600 transition-transform duration-300"
     />
 
@@ -127,7 +154,7 @@ const Login = () => {
     
 
     <FaXTwitter
-      title="Register with Twitter"
+      title="Register with Twitter" onClick={handleTwitterLogin}
       className="hover:scale-110 text-blue-400 transition-transform duration-300"
     />
   </div>

@@ -30,7 +30,7 @@ const CouponSlider = () => {
                             <div className="w-[250px] h-[250px] shadow-lg rounded-lg p-5 border border-gray-200 flex flex-col justify-center items-center text-center">
                                 <h3 className="text-lg font-bold text-[#25c98a]">{coupon.CouponCode}</h3>
                                 <p className="text-sm text-gray-600 mt-2">{coupon.CouponDescription}</p>
-                                <p className="text-md font-semibold text-green-600 mt-2">Discount: {coupon.DiscountAmount}%</p>
+                                <p className="text-md font-semibold text-green-600 mt-2">Discount: {coupon.DiscountAmount} $</p>
                                 <p className="text-sm text-red-500 mt-2">Expires: {coupon.ExpiredDate}</p>
                             </div>
                         </Slider.Slide>

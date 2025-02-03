@@ -1,8 +1,10 @@
-import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, FacebookAuthProvider, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut, TwitterAuthProvider } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { auth } from "../Firebase/Firebase.init";
 import UseAxiosPublic from "../hook/useAxiosPublic/UseAxiosPublic";
 const provider = new GoogleAuthProvider();
+const fbProvider= new FacebookAuthProvider()
+const twitterProvider= new TwitterAuthProvider()
 
 
 //create context
@@ -33,6 +35,17 @@ const AuthProvider = ({children}) => {
         setLoading(true)
         return signOut(auth)
     }
+
+    // fb signIn
+  const loginWithFacebook=()=>{
+    return signInWithPopup(auth,fbProvider);
+  }
+  // twitter
+
+  const loginWithTwitter=()=>{
+
+   return signInWithPopup(auth,twitterProvider)
+  }
     // survilance 
     useEffect(()=>{
         const unSubscribe= onAuthStateChanged(auth,currentUser=>{
@@ -72,7 +85,7 @@ const AuthProvider = ({children}) => {
    
 
     const authInfo={
-        user,loading,createuser,signInUser,signInWithGoogle,logOut,setLoading
+        loginWithTwitter,   user,loading,createuser,signInUser,loginWithFacebook,signInWithGoogle,logOut,setLoading
     }
     return (
        <AuthContext.Provider value={authInfo}>
