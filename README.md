@@ -1,4 +1,4 @@
-# Project: Product Planet
+# Project Name: Product Planet
 
 
 **Live Website:** [Product Planet](https://product-planet-dd891.web.app/) 
