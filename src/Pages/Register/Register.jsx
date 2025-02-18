@@ -170,7 +170,7 @@ const Register = () => {
     <div className="border-t border-gray-300 flex-grow"></div>
   </div>
 
-{/* Social Login */}
+{/* Social Logi */}
   <div className="mt-6">
   <div className="mt-4 flex justify-center gap-10 text-3xl cursor-pointer">
 
