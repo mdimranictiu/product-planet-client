@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import { FaXTwitter } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebook } from "react-icons/fa";
@@ -13,11 +13,14 @@ const Login = () => {
     const location=useLocation();
     const from=location.state?.from?.pathname || '/';
     console.log(from)
+    const emailRef=useRef(null)
+    const passwordRef=useRef(null)
+     document.title="Login"
     const navigate=useNavigate()
         const {
             register,
             handleSubmit,
-            watch,
+            watch,setValue,
             formState: { errors },reset
           } = useForm()
         
@@ -78,7 +81,25 @@ const Login = () => {
         text: error.message,
       });
     })
-   }            
+   } 
+   // handle user credintials
+   const handleCredintials=(role)=>{
+    console.log(role)
+     if(role==='user'){
+      setValue('email','imran@imran.com'),
+      setValue('password','Imran123')
+     }
+     else if(role==='moderator'){
+      setValue('email','moderator@imran.com'),
+      setValue('password','Imran123')
+     }
+     
+     else if(role==='admin'){
+      setValue('email','admin@imran.com'),
+      setValue('password','Imran123')
+     }
+     
+   }           
   return (
     <div className="flex justify-center py-10 min-h-screen ">
       <div className="w-full max-w-xl   shadow-[32px] rounded-lg p-8">
@@ -86,12 +107,24 @@ const Login = () => {
             <h2 className="text-3xl font-bold py-3">Welcome Back</h2>
             <p className=" mb-2">Please enter your details to login</p>
         </div>
+        <h3 className="text-center text-red-500 py-2 font-semibold">Demo Credintials</h3>
+        <div className="px-5 py-5 max-sm:px-2 gap-2 flex justify-around text-white">
+          <button onClick={()=>handleCredintials('user')} className="btn duration-500 bg-red-500 px-10 py-2 rounded-lg hover:bg-white hover:text-red-500">
+            User 
+          </button>
+          <button onClick={()=>handleCredintials('moderator')} className="btn duration-500 bg-red-500 px-10 py-2 rounded-lg hover:bg-white hover:text-red-500">
+            Moderator
+          </button>
+          <button onClick={()=>handleCredintials('admin')}  className="btn duration-500 bg-red-500 px-10 py-2 rounded-lg transi hover:bg-white hover:text-red-500">
+           Admin 
+          </button>
+        </div>
     
         <form  className=" p-5 py-10" onSubmit={handleSubmit(onSubmit)}>
 
     <div className="mb-4">
       <label  className="block text-gray-600 font-semibold mb-2">Email</label>
-      <input 
+      <input  ref={emailRef}
         type="email" {...register("email")}
         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#EACABE] focus:outline-none"
         placeholder="Enter your email" 
@@ -101,7 +134,7 @@ const Login = () => {
 
     <div className="mb-10">
       <label  className="block text-gray-600 font-semibold mb-2">Password</label>
-      <input 
+      <input ref={passwordRef}
         type="password"  {...register("password", {
             minLength: {
               value: 6,
