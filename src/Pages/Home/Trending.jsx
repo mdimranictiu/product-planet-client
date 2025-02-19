@@ -10,6 +10,7 @@ const Trending = () => {
   const [upvoteErrors, setUpvoteErrors] = useState({});
   const axiosPublic = UseAxiosPublic();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const { user } = useContext(AuthContext);
   const axiosSecure = UseAxiosSecure();
@@ -27,8 +28,10 @@ const Trending = () => {
       .get("/trending-product")
       .then((res) => {
         setProducts(res.data);
+        setLoading(false);
       })
       .catch((error) => {
+        setLoading(false);
         console.error("Error fetching feature products:", error.message);
       });
   }, [axiosPublic]);
@@ -87,12 +90,24 @@ const Trending = () => {
         <div>
             <h2 className="text-center font-bold text-3xl py-10">Trending Products</h2>
         </div>
-      <div className="grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-5">
+        {loading ? (
+        <div className="grid grid-cols-3 p-10 max-md:grid-cols-2 max-sm:grid-cols-1 gap-5">
+          {Array.from({ length: 6 }).map((_, index) => (
+            <div key={index} className="flex max-w-sm  flex-col gap-4">
+              <div className="skeleton h-[200px] w-full bg-gray-300 rounded-lg"></div>
+              <div className="skeleton h-4 w-36 bg-gray-300 rounded"></div>
+              <div className="skeleton h-4 w-full bg-gray-300 rounded"></div>
+              <div className="skeleton h-4 w-28 bg-gray-300 rounded"></div>
+            </div>
+          ))}
+        </div>
+      ) : (
+      <div className="grid grid-cols-3 p-5  max-md:grid-cols-2 max-sm:grid-cols-1 gap-5">
         {products?.map((product) => (
-          <div
-            key={product._id}
-            className="max-w-sm bg-white rounded-xl py-5 overflow-hidden shadow-lg"
-          >
+       <div
+       key={product._id}
+       className="max-w-sm rounded-xl min-h-[320px] py-5 overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-300"
+     >
             <div className="w-4/5  mx-auto h-[200px] my-5 rounded-xl">
               <img
                 className="w-full h-full rounded-xl"
@@ -106,26 +121,21 @@ const Trending = () => {
                   <h2 className="text-indigo-600">{product?.productName}</h2>
                 </Link>
               </div>
-              <div className="mb-2">
-                {product?.tags?.length > 0 && (
-                  <div className="mt-4">
-                    {/* <h4 className="text-lg font-semibold text-gray-700">
-                      Tags:
-                    </h4> */}
-                    <div className="flex flex-wrap gap-2 mt-2">
-                      {product?.tags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 text-[16px] bg-blue-100 text-blue-600 rounded-full "
-                        >
-                          {tag.text}
-                        </span>
-                      ))}
-                    </div>
+              
+              <div className="mb-2 flex-grow">
+                {product?.tags?.length > 0 ? (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {product?.tags.map((tag, idx) => (
+                      <span key={idx} className="px-3 py-1 text-[16px] bg-blue-100 text-blue-600 rounded-full">
+                        {tag.text}
+                      </span>
+                    ))}
                   </div>
+                ) : (
+                  <p className="text-gray-400">No Tags</p>
                 )}
               </div>
-              <div className="mt-2">
+              <div className="mb-2">
                 <button
                   onClick={() => handleUpvote(product)}
                   disabled={product?.ownerInfo?.email === user?.email}
@@ -147,7 +157,7 @@ const Trending = () => {
             </div>
           </div>
         ))}
-      </div>
+      </div>)}
       <div className="py-10 text-center text-xl font-semibold">
   <Link to="/products">
     <button className="px-6 py-3 text-white bg-blue-500 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:bg-blue-600 hover:scale-105 focus:ring-4 focus:ring-[#c27329]/50">
@@ -155,6 +165,7 @@ const Trending = () => {
     </button>
   </Link>
 </div>
+
     </div>
   );
 };

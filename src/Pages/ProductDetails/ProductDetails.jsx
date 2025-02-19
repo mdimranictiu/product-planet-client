@@ -7,11 +7,13 @@ import { MdOutlineReport } from "react-icons/md";
 import ReactStars from "react-rating-stars-component";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
+import gifUrl from '../../assets/image/pre.gif'
+
 
 const ProductDetails = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  const [loading,setLoading]=useState(true)
   const [product, setProduct] = useState();
   const [success, setSuccess] = useState("");
   const [rating, setRating] = useState(0);
@@ -38,13 +40,16 @@ const ProductDetails = () => {
     // Ensure productId exists before making the request
     const productId = location?.state?.productId;
     if (productId) {
+      setLoading(true)
       axiosSecure
         .get(`/find/product/${productId}`)
         .then((res) => {
           setProduct(res.data);
+          setLoading(false)
         })
         .catch((error) => {
           console.log(error.message);
+          setLoading(false)
         });
     }
   }, [location?.state?.productId]);
@@ -200,7 +205,19 @@ const ProductDetails = () => {
         });
       });
   };
-
+ if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="w-full max-w-xl shadow-lg rounded-lg p-8">
+          <img
+            src={gifUrl}
+            alt="Loading"
+            className="w-full object-contain"
+          />
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="flex justify-center py-10 min-h-screen bg-gray-100">
       <div className="w-full max-w-5xl  shadow-lg rounded-lg p-8">
