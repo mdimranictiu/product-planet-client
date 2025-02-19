@@ -107,15 +107,15 @@ const Login = () => {
             <h2 className="text-3xl font-bold py-3">Welcome Back</h2>
             <p className=" mb-2">Please enter your details to login</p>
         </div>
-        <h3 className="text-center text-red-500 py-2 font-semibold">Demo Credintials</h3>
-        <div className="px-5 py-5 max-sm:px-2 gap-2 flex justify-around text-white">
-          <button onClick={()=>handleCredintials('user')} className="btn duration-500 bg-red-500 px-10 py-2 rounded-lg hover:bg-white hover:text-red-500">
+        <h3 className="text-center text-[#FF6154] py-2 font-semibold">Demo Credentials</h3>
+        <div className="px-5 py-5 max-sm:flex-col gap-2 flex justify-around text-white">
+          <button onClick={()=>handleCredintials('user')} className="btn duration-500 bg-[#FF6154] px-10 py-2 rounded-lg hover:bg-white hover:text-red-500">
             User 
           </button>
-          <button onClick={()=>handleCredintials('moderator')} className="btn duration-500 bg-red-500 px-10 py-2 rounded-lg hover:bg-white hover:text-red-500">
+          <button onClick={()=>handleCredintials('moderator')} className="btn duration-500 bg-[#FF6154] px-10 py-2 rounded-lg hover:bg-white hover:text-red-500">
             Moderator
           </button>
-          <button onClick={()=>handleCredintials('admin')}  className="btn duration-500 bg-red-500 px-10 py-2 rounded-lg transi hover:bg-white hover:text-red-500">
+          <button onClick={()=>handleCredintials('admin')}  className="btn duration-500 bg-[#FF6154] px-10 py-2 rounded-lg transi hover:bg-white hover:text-red-500">
            Admin 
           </button>
         </div>

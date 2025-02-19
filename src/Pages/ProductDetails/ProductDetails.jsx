@@ -187,7 +187,6 @@ const ProductDetails = () => {
       .post("/addreview", addNewReview)
       .then((res) => {
         if (res.data.insertedId) {
-          console.log("add review successfully");
           setSuccess("Review added successfully!");
           Setrefetch(true)
           reset();
@@ -204,25 +203,24 @@ const ProductDetails = () => {
 
   return (
     <div className="flex justify-center py-10 min-h-screen bg-gray-100">
-      <div className="w-full max-w-5xl shadow-lg rounded-lg p-8">
+      <div className="w-full max-w-5xl  shadow-lg rounded-lg p-8">
         <div className="bg-white text-black mx-auto p-6 rounded-lg ">
           <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
             Product Details
           </h2>
           <div className="py-10">
             
-            <div className="w-[320px] py-2 max-w-full h-[220px] mx-auto overflow-hidden rounded-lg">
+            <div className="w-[320px] py-2 max-w-full  min-h-[220px]  mx-auto overflow-hidden rounded-lg">
               <img
                 src={product?.productPhotoURL}
                 alt="Product Photo"
-                className="w-full h-full object-cover border-2 border-gray-300 rounded-lg"
+                className="w-full h-full p-3 object-cover border-2 border-gray-300 rounded-xl"
               />
             </div>
             <div className="flex flex-col gap-4 p-4  rounded ">
               {/* Product information*/}
               <h2 className="text-xl font-semibold">
                 <span className="text-gray-700">
-                  Product Name:{" "}
                   <span className="text-blue-600"> {product?.productName}</span>
                 </span>
               </h2>
@@ -243,7 +241,7 @@ const ProductDetails = () => {
                     {product?.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full text-sm"
+                        className="px-3 py-1 bg-blue-200 text-blue-600 rounded-full text-sm"
                       >
                         {tag.text}
                       </span>
@@ -268,7 +266,7 @@ const ProductDetails = () => {
                 </div>
               )}
 
-              <div className="mt-6 flex  gap-4">
+              <div className="mt-4 flex  gap-4">
                 <button
                   onClick={handleUpvote}
                   disabled={product?.ownerInfo?.email === user?.email}
