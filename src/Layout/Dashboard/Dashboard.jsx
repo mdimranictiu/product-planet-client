@@ -76,6 +76,12 @@ const Dashboard = () => {
                       <p>Manage Coupons</p>
                     </NavLink>
                   </li>
+                  <li className="py-3">
+                    <NavLink className="flex gap-2 items-center" to="/dashboard/myProfile">
+                      <RiCoupon3Fill />
+                      <p>My Profile</p>
+                    </NavLink>
+                  </li>
                 </>
               ) : isModerator ? (
                 <>

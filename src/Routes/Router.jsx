@@ -24,6 +24,7 @@ import MakePayment from "../Pages/Dashboard/UserHome/Payment/MakePayment";
 import Products from "../Pages/Products/Products";
 import CouponPage from "../Pages/Dashboard/AdminHome/CouponPage";
 import UpdateCoupon from "../Pages/Dashboard/AdminHome/UpdateCoupon";
+import Advertise from "../Pages/Advertise/Advertise";
 
 
 export const router = createBrowserRouter([
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
         {
             path: '/register',
             element: <Register></Register>
+        },
+        {
+            path:'/advertise',
+            element: <Advertise></Advertise>
         },
         {
             path: '/login',
@@ -118,6 +123,10 @@ export const router = createBrowserRouter([
         },{
           path:'updateCoupon',
           element: <PrivateAdmin><UpdateCoupon></UpdateCoupon></PrivateAdmin>
+        }
+        ,{
+          path:'myProfile',
+          element: <MyProfile></MyProfile>
         }
       ]
     }

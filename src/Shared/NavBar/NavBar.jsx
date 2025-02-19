@@ -1,164 +1,105 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { MdDashboardCustomize, MdLogout } from "react-icons/md";
+import { MdDashboardCustomize, MdLogout, MdClose } from "react-icons/md";
 import { RiMenu2Line } from "react-icons/ri";
-import { MdClose } from "react-icons/md";
 import { AuthContext } from "../../AuthContext/AuthProvider";
 import useModerator from "../../hook/useModerator";
 import useAdmin from "../../hook/useAdmin";
+import ToggleTheme from "../ToggleTheme";
 
 const NavBar = () => {
   const { user, logOut } = useContext(AuthContext);
   const dropdownRef = useRef(null);
-  const menuClickRef = useRef(null);
+  const menuRef = useRef(null);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isModerator, isModeratorLoading] = useModerator();
-  const [isAdmin, isAdminLoading] = useAdmin();
+  const [isModerator] = useModerator();
+  const [isAdmin] = useAdmin();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  const dropdowntoggle = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+  const toggleDropdown = () => setDropdownOpen(!dropdownOpen);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
       }
-    };
-
-    const handleClickOutsideMenu = (event) => {
-      if (menuClickRef.current && !menuClickRef.current.contains(event.target)) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
         setMenuOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("mousedown", handleClickOutsideMenu);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("mousedown", handleClickOutsideMenu);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleSignOut = () => {
-    logOut();
-  };
-
-  const links = (
-    <>
-      <li>
-        <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
-      </li>
-      <li>
-        <Link to="/products" onClick={() => setMenuOpen(false)}>Products</Link>
-      </li>
-      <li>
-        <Link to="/news" onClick={() => setMenuOpen(false)}>News</Link>
-      </li>
-      {user && <></>}
-    </>
-  );
-
-  const conditionalMenu = (
-    <>
-      {user ? (
-        <div ref={dropdownRef} className="relative flex ml-32 items-center max-sm:items-start gap-6 max-sm:flex-col">
-          <button onClick={dropdowntoggle} className="rounded-full w-12 h-12 bg-gray-500">
-            <img src={user?.photoURL} alt="Profile" className="w-full h-full rounded-full object-cover" />
-          </button>
-
-          {dropdownOpen && (
-            <div className="absolute py-3 mt-[236px] max-sm:mt-[60px] text-white bg-[#282344] -ml-[80px] w-48 rounded shadow-lg z-10">
-              <div className="px-4 py-2">
-                <p className="font-medium">{user.displayName}</p>
-              </div>
-              {user && (
-                <ul className="py-1">
-                  {isModerator && (
-                    <li className="flex items-center px-4 py-2">
-                      <MdDashboardCustomize className="mr-2" />
-                      <Link to="/dashboard/ModeratorHome">Dashboard</Link>
-                    </li>
-                  )}
-                  {isAdmin && (
-                    <li className="flex items-center px-4 py-2">
-                      <MdDashboardCustomize className="mr-2" />
-                      <Link to="/dashboard/adminHome">Dashboard</Link>
-                    </li>
-                  )}
-                  {!isModerator && !isAdmin && (
-                    <li className="flex items-center px-4 py-2">
-                      <MdDashboardCustomize className="mr-2" />
-                      <Link to="/dashboard/UserHome">Dashboard</Link>
-                    </li>
-                  )}
-
-                  <li onClick={handleSignOut} className="flex items-center px-4 py-2">
-                    <MdLogout className="mr-2" />
-                    <button className="w-full text-left">Logout</button>
-                  </li>
-                </ul>
-              )}
-            </div>
-          )}
-        </div>
-      ) : (
-        <div className="flex gap-6 max-sm:hidden ml-32 text-xl max-sm:gap-12">
-          <button>
-            <Link to="/login" className="px-4 py-2 text-white bg-[#FF6154] rounded">Login</Link>
-          </button>
-          <button>
-            <Link to="/register" className="px-4 py-2 text-white bg-[#FF6154] rounded">Register</Link>
-          </button>
-        </div>
-      )}
-    </>
-  );
+  const handleSignOut = () => logOut();
 
   return (
-    <div className="bg-[#1F2937] text-white shadow-xl sticky top-0 z-50">
-      <div className="flex w-4/5 mx-auto justify-between px-6 items-center py-5">
-        <div className="flex gap-2 items-center">
-          <div className="hidden px-3 max-md:block">
-            <RiMenu2Line onClick={() => setMenuOpen(!menuOpen)} className="text-2xl" />
-          </div>
+    <nav className="bg-[#1F2937] text-white shadow-xl sticky top-0 z-50">
+      <div className="flex w-4/5 mx-auto justify-between items-center py-4 px-6">
+        <div className="flex items-center gap-4">
+          <button className="text-2xl md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
+            <RiMenu2Line />
+          </button>
           <Link to="/">
-            <h2 className="text-3xl max-sm:text-xl font-bold" style={{ fontFamily: "'Dancing Script', serif" }}>
+            <h2 className="text-3xl font-bold max-sm:text-xl" style={{ fontFamily: "'Dancing Script', serif" }}>
               Product Planet
             </h2>
           </Link>
         </div>
-        <div className="max-md:hidden">
-          <ul className="flex ml-32 gap-6 text-xl">{links}</ul>
+
+        <ul className="hidden md:flex gap-6 text-xl">
+          <li><Link to="/" className="hover:text-gray-400">Home</Link></li>
+          <li><Link to="/products" className="hover:text-gray-400">Products</Link></li>
+          <li><Link to="/advertise" className="hover:text-gray-400">Advertise</Link></li>
+        </ul>
+
+        <div className="flex items-center gap-6">
+          <ToggleTheme />
+          {user ? (
+            <div ref={dropdownRef} className="relative">
+              <button onClick={toggleDropdown} className="w-12 h-12 rounded-full bg-gray-500">
+                <img src={user?.photoURL} alt="Profile" className="w-full h-full rounded-full object-cover" />
+              </button>
+              {dropdownOpen && (
+                <div className="absolute right-0 mt-2 bg-[#282344] text-white w-48 rounded shadow-lg z-10">
+                  <p className="px-4 py-2 font-medium">{user.displayName}</p>
+                  <ul className="py-1">
+                    {isModerator && <li className="flex items-center px-4 py-2 hover:bg-gray-600"><MdDashboardCustomize className="mr-2" /><Link to="/dashboard/ModeratorHome">Dashboard</Link></li>}
+                    {isAdmin && <li className="flex items-center px-4 py-2 hover:bg-gray-600"><MdDashboardCustomize className="mr-2" /><Link to="/dashboard/adminHome">Dashboard</Link></li>}
+                    {!isModerator && !isAdmin && <li className="flex items-center px-4 py-2 hover:bg-gray-600"><MdDashboardCustomize className="mr-2" /><Link to="/dashboard/UserHome">Dashboard</Link></li>}
+                    <li onClick={handleSignOut} className="flex items-center px-4 py-2 hover:bg-red-500 cursor-pointer"><MdLogout className="mr-2" />Logout</li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="hidden md:flex gap-4">
+              <Link to="/login" className="px-4 py-2 text-white bg-[#FF6154] rounded">Login</Link>
+              <Link to="/register" className="px-4 py-2 text-white bg-[#FF6154] rounded">Register</Link>
+            </div>
+          )}
         </div>
-        <div className="">{conditionalMenu}</div>
       </div>
 
-      <div
-        ref={menuClickRef}
-        className={`fixed top-[80px] left-0 py-12 z-40 w-full bg-white text-[#282344] shadow-lg transform transition-transform duration-300 ${
-          menuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <button onClick={() => setMenuOpen(false)} className="absolute top-4 right-4 text-2xl">
-          <MdClose />
-        </button>
-        <ul className="flex my-5 text-xl flex-col ml-[25px] items-start gap-5">{links}</ul>
-        {user ? "" : (
-          <div className="flex ml-[25px] flex-col gap-10 items-start">
-            <button>
-              <Link to="/login" className="px-4 py-2 text-white bg-[#FF6154] rounded">Login</Link>
-            </button>
-            <button>
-              <Link to="/register" className="px-4 py-2 text-white bg-[#FF6154] rounded">Register</Link>
-            </button>
-          </div>
-        )}
+      <div ref={menuRef} className={`fixed top-0 left-0 w-full h-screen bg-black bg-opacity-50 transform transition-transform duration-300 ${menuOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className="bg-[#1F2937] w-64 h-full shadow-lg py-6 px-4 relative">
+          <button onClick={() => setMenuOpen(false)} className="absolute top-4 right-4 text-2xl p-2 rounded-full">
+            <MdClose />
+          </button>
+          <ul className="mt-12 flex flex-col gap-4 text-lg">
+            <li><Link to="/" className="block py-2 px-4 " onClick={() => setMenuOpen(false)}>Home</Link></li>
+            <li><Link to="/products" className="block py-2 px-4 " onClick={() => setMenuOpen(false)}>Products</Link></li>
+            <li><Link to="/advertise" className="block py-2 px-4 " onClick={() => setMenuOpen(false)}>Advertise</Link></li>
+          </ul>
+          {!user ? (
+            <div className="mt-6 flex flex-col gap-4">
+              <Link to="/login" className="block text-center py-2 bg-[#FF6154] text-white rounded">Login</Link>
+              <Link to="/register" className="block text-center py-2 bg-[#FF6154] text-white rounded">Register</Link>
+            </div>
+          ) : null}
+        </div>
       </div>
-    </div>
+    </nav>
   );
 };
 

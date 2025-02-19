@@ -3,6 +3,7 @@ import useAuth from "../../../hook/useAuth";
 import usePaymentStatus from "../../../hook/usePaymentStatus";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import useAdmin from "../../../hook/useAdmin";
 
 const MyProfile = () => {
   const { user } = useAuth();
@@ -10,6 +11,7 @@ const MyProfile = () => {
   const navigate=useNavigate()
   console.log(paymentStatus);
   const location=useLocation()
+  const [isAdmin] = useAdmin();
   // title
   document.title=`${user?.displayName} Profile`
   return (
@@ -41,7 +43,7 @@ const MyProfile = () => {
           </div>
 
           {/* Payment Status Button */}
-          <div className="text-center mt-8">
+          <div className={ isAdmin? "hidden": "text-center mt-8"}>
           <Link to='/dashboard/payment' state={{ from: location }}> <button onClick={()=>handleMakePayment()}
   disabled={paymentStatus?.paystatus == true}
   className={`px-6 py-3 font-semibold rounded-lg shadow-lg transition duration-300 ${
