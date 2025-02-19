@@ -48,7 +48,7 @@ const ComingSoon = () => {
             >
               <div className="flex items-center gap-3">
                 <div className="w-16 h-16 rounded-sm overflow-hidden">
-                  <div className="skeleton h-16 w-16 shrink-0 bg-gray-300 rounded-full"></div>
+                  <div className="skeleton h-16 w-16 shrink-0 bg-gray-300 "></div>
                 </div>
                 <div className="flex flex-col gap-2 text-start">
                   <div className="skeleton h-4 w-36 bg-gray-300 rounded"></div>
