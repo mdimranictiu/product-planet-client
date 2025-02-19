@@ -106,9 +106,9 @@ const Feature = () => {
           {products?.map((product) => (
             <div
               key={product._id}
-              className="max-w-sm min-h-[320px] rounded-xl py-5 overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-300"
+              className="max-w-sm min-h-[320px]  rounded-xl py-5 overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-300"
             >
-              <div className="w-4/5 mx-auto h-[200px] my-5 rounded-xl">
+              <div className="w-4/5  mx-auto h-[200px] my-5 rounded-xl">
                 <img
                   className="w-full h-full rounded-xl"
                   src={product?.productPhotoURL}

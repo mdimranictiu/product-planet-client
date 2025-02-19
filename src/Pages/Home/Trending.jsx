@@ -86,7 +86,7 @@ const Trending = () => {
   };
 
   return (
-    <div className="py-10 max-sm:w-full w-4/5 mx-auto px-10">
+    <div className="py-10 max-sm:w-full w-4/5 max-md:w-full mx-auto px-10">
         <div>
             <h2 className="text-center font-bold text-3xl py-10">Trending Products</h2>
         </div>

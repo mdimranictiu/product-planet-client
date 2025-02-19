@@ -89,11 +89,11 @@ const Products = () => {
   document.title = "Products";
 
   return (
-    <div className="py-10 w-4/5 mx-auto px-10">
+    <div className="py-10 w-4/5 max-sm:w-full max-md:w-full mx-auto px-10">
       <h2 className="text-center font-bold text-3xl py-10">Products</h2>
 
       {/* Search bar */}
-      <div className="flex items-center w-3/5 mx-auto my-10 bg-gray-200 p-2 rounded-lg shadow">
+      <div className="flex items-center max-sm:w-full w-3/5 mx-auto my-10 bg-gray-200 p-2 rounded-lg shadow">
         <input
           type="text"
           placeholder="Search products by tags"
@@ -131,7 +131,7 @@ const Products = () => {
             products.map((product) => (
               <div
                 key={product._id}
-                className="max-w-sm rounded-xl min-h-[320px] py-5 shadow-2xl hover:shadow-3xl transition-shadow duration-300"
+                className="max-w-sm max-sm:w-full  rounded-xl min-h-[320px] py-5 shadow-2xl hover:shadow-3xl transition-shadow duration-300"
               >
                 <div className="w-4/5 mx-auto h-[200px] my-5 rounded-xl">
                   <img

@@ -4,6 +4,7 @@ import Feature from './Feature';
 import Trending from './Trending';
 import Banner from './Banner';
 import CouponSlider from './CouponSlider';
+import ComingSoon from './ComingSoon';
 
 const Home = () => {
     document.title='Home || ProductPlanet'
@@ -13,6 +14,7 @@ const Home = () => {
        <Feature></Feature>
        <Trending></Trending>
        <CouponSlider></CouponSlider>
+       <ComingSoon></ComingSoon>
        </>
     );
 };
