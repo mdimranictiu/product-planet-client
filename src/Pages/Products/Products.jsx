@@ -11,7 +11,7 @@ const Products = () => {
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [sortOption, setSortOption] = useState("latest"); // Default sorting
+  const [sortOption, setSortOption] = useState("latest"); // Added state for sorting option
 
   const axiosPublic = UseAxiosPublic();
   const navigate = useNavigate();
@@ -22,28 +22,72 @@ const Products = () => {
   useEffect(() => {
     setLoading(true);
     axiosPublic
-      .get(`/products?search=${search}&page=${currentPage}&limit=6`)
+      .get(`/products?search=${search}&page=${currentPage}&limit=6&sort=${sortOption}`) // Added sorting query
       .then((res) => {
-        let sortedProducts = res.data.products || [];
-
-        // Apply sorting based on selected option
-        if (sortOption === "popular") {
-          sortedProducts = sortedProducts.sort(
-            (a, b) => b.upvoteCount - a.upvoteCount
-          );
-        } else if (sortOption === "latest") {
-          sortedProducts = sortedProducts.sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
-          );
-        }
-
-        setProducts(sortedProducts);
+        setProducts(res.data.products || []);
         setCurrentPage(res.data.currentPage || 1);
         setTotalPages(res.data.totalPages || 1);
       })
       .catch((error) => console.error("Error fetching products:", error.message))
       .finally(() => setLoading(false));
-  }, [axiosPublic, search, currentPage, sortOption]);
+  }, [axiosPublic, search, currentPage, sortOption]); // Added sortOption to dependency array
+
+  const handleUpvote = (product) => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    if (product?.ownerInfo?.email === user?.email) {
+      setUpvoteErrors((prev) => ({
+        ...prev,
+        [product._id]: "You cannot upvote your own product.",
+      }));
+      return;
+    }
+
+    if (product?.upvoters?.includes(user?.email)) {
+      setUpvoteErrors((prev) => ({
+        ...prev,
+        [product._id]: "You have already upvoted this product.",
+      }));
+      return;
+    }
+
+    const newUpvoteCount = (product?.upvoteCount || 0) + 1;
+    axiosSecure
+      .patch(`/product/upvote/${product?._id}`, {
+        upvoteCount: newUpvoteCount,
+        user: user?.email,
+      })
+      .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          setProducts((prevProducts) =>
+            prevProducts.map((p) =>
+              p._id === product._id
+                ? {
+                    ...p,
+                    upvoteCount: newUpvoteCount,
+                    upvoters: [...(p.upvoters || []), user?.email],
+                  }
+                : p
+            )
+          );
+          setUpvoteErrors((prev) => ({ ...prev, [product._id]: "" }));
+        }
+      })
+      .catch((error) => console.error("Error updating upvote:", error.message));
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  };
+
+  document.title = "Products";
 
   return (
     <div className="py-10 w-4/5 max-sm:w-full max-md:w-full mx-auto px-10">
@@ -53,7 +97,7 @@ const Products = () => {
       <div className="flex items-center max-sm:w-full w-3/5 mx-auto my-10 bg-gray-200 p-2 rounded-lg shadow">
         <input
           type="text"
-          placeholder="Search products by tags or Product name"
+          placeholder="Search products by tags"
           className="w-full p-2 rounded-l-lg focus:outline-none"
           onChange={(e) => setSearch(e.target.value)}
         />
@@ -62,7 +106,7 @@ const Products = () => {
         </button>
       </div>
 
-      {/* Sorting Dropdown */}
+      {/* Sort By Dropdown */}
       <div className="p-5">
         <label htmlFor="sort" className="block text-lg font-medium mb-2">
           Sort By:
@@ -78,84 +122,101 @@ const Products = () => {
         </select>
       </div>
 
-      {/* Product Listing */}
-      <div className="grid py-5 grid-cols-3 min-h-screen max-md:grid-cols-2 max-sm:grid-cols-1 gap-5">
-        {products.length > 0 ? (
-          products.map((product) => (
+      {/* Loader */}
+      {loading ? (
+        <div className="grid py-5 grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 gap-5">
+          {Array.from({ length: 6 }).map((_, index) => (
             <div
-              key={product._id}
-              className="max-w-sm max-sm:w-full rounded-xl min-h-[320px] py-5 shadow-2xl hover:shadow-3xl transition-shadow duration-300"
+              key={index}
+              className="max-w-sm rounded-xl min-h-[320px] py-5 shadow-2xl animate-pulse bg-gray-200"
             >
-              <div className="w-4/5 mx-auto h-[200px] my-5 rounded-xl">
-                <img
-                  className="w-full h-full rounded-xl"
-                  src={product?.productPhotoURL}
-                  alt={product?.productName || "Product Image"}
-                />
-              </div>
+              <div className="w-4/5 mx-auto h-[200px] my-5 rounded-xl bg-gray-300"></div>
               <div className="px-5 py-4">
-                <h3 className="font-bold text-xl text-indigo-600">
-                  <Link
-                    to="/productDetails"
-                    state={{ productId: product._id }}
-                  >
-                    {product?.productName}
-                  </Link>
-                </h3>
-                {product?.tags?.length > 0 && (
-                  <div className="mt-4">
-                    <div className="flex flex-wrap gap-2">
-                      {product.tags.map((tag, idx) => (
-                        <span
-                          key={idx}
-                          className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full"
-                        >
-                          {tag.text}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-                {/* <p className="text-gray-500 text-sm mt-2">
-                  Created on: {new Date(product.createdAt).toLocaleDateString()}
-                </p> */}
-                <button
-                  disabled={product?.ownerInfo?.email === user?.email}
-                  className={`mt-4 px-6 py-2 rounded-lg text-white flex items-center gap-2 ${
-                    product?.ownerInfo?.email === user?.email
-                      ? "bg-gray-400 cursor-not-allowed"
-                      : "bg-blue-600 hover:bg-blue-700"
-                  }`}
-                >
-                  <FaThumbsUp />
-                  <span>{product?.upvoteCount || 0} Upvotes</span>
-                </button>
+                <div className="h-6 bg-gray-300 w-3/4 rounded-md mb-4"></div>
+                <div className="flex gap-2">
+                  <div className="px-3 py-1 bg-gray-300 w-16 rounded-full"></div>
+                  <div className="px-3 py-1 bg-gray-300 w-20 rounded-full"></div>
+                </div>
+                <div className="mt-4 h-10 bg-gray-300 w-full rounded-md"></div>
               </div>
             </div>
-          ))
-        ) : (
-          <p className="text-center text-xl text-gray-500">No products found.</p>
-        )}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="grid py-5 grid-cols-3 min-h-screen max-md:grid-cols-2 max-sm:grid-cols-1 gap-5">
+          {products.length > 0 ? (
+            products.map((product) => (
+              <div
+                key={product._id}
+                className="max-w-sm max-sm:w-full rounded-xl min-h-[320px] py-5 shadow-2xl hover:shadow-3xl transition-shadow duration-300"
+              >
+                <div className="w-4/5 mx-auto h-[200px] my-5 rounded-xl">
+                  <img
+                    className="w-full h-full rounded-xl"
+                    src={product?.productPhotoURL}
+                    alt={product?.productName || "Product Image"}
+                  />
+                </div>
+                <div className="px-5 py-4">
+                  <h3 className="font-bold text-xl text-indigo-600">
+                    <Link to="/productDetails" state={{ productId: product._id }}>
+                      {product?.productName}
+                    </Link>
+                  </h3>
+                  {product?.tags?.length > 0 && (
+                    <div className="mt-4">
+                      <div className="flex flex-wrap gap-2">
+                        {product.tags.map((tag, idx) => (
+                          <span
+                            key={idx}
+                            className="px-3 py-1 bg-blue-100 text-blue-600 rounded-full"
+                          >
+                            {tag.text}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  <button
+                    onClick={() => handleUpvote(product)}
+                    disabled={product?.ownerInfo?.email === user?.email}
+                    className={`mt-4 px-6 py-2 rounded-lg text-white flex items-center gap-2 ${
+                      product?.ownerInfo?.email === user?.email
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-blue-600 hover:bg-blue-700"
+                    }`}
+                  >
+                    <FaThumbsUp />
+                    <span>{product?.upvoteCount || 0} Upvotes</span>
+                  </button>
+                  {upvoteErrors[product._id] && (
+                    <p className="text-red-600 mt-2">{upvoteErrors[product._id]}</p>
+                  )}
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-xl text-gray-500">No products found.</p>
+          )}
+        </div>
+      )}
 
       {/* Pagination */}
       <div className="flex justify-center items-center gap-4 mt-10">
         <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          onClick={handlePreviousPage}
           disabled={currentPage === 1}
-          className="px-4 py-2 bg-gray-300 rounded-lg disabled:opacity-50"
+          className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50"
         >
           Previous
         </button>
-        <span>
+        <p>
           Page {currentPage} of {totalPages}
-        </span>
+        </p>
         <button
-          onClick={() =>
-            setCurrentPage((prev) => (prev < totalPages ? prev + 1 : prev))
-          }
+          onClick={handleNextPage}
           disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg disabled:opacity-50"
+          className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50"
         >
           Next
         </button>
