@@ -26,8 +26,8 @@ const Review = () => {
   }, []);
 
   return (
-    <section className="py-10 w-4/5 mx-auto px-10 max-sm:w-full max-md:w-full">
-      <h2 className="text-center font-bold text-3xl py-10">
+    <section className="py-10  w-4/5 mx-auto px-10 max-sm:w-full max-md:w-full">
+      <h2 className="text-center font-bold text-3xl">
         What People Are Saying
       </h2>
 

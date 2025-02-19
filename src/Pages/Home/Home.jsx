@@ -6,6 +6,8 @@ import Banner from './Banner';
 import CouponSlider from './CouponSlider';
 import ComingSoon from './ComingSoon';
 import Review from './Review';
+import Contact from './Contact';
+import Customers from './Customers';
 
 const Home = () => {
     document.title='Home || ProductPlanet'
@@ -16,7 +18,9 @@ const Home = () => {
        <Trending></Trending>
        <CouponSlider></CouponSlider>
        <ComingSoon></ComingSoon>
+       <Customers></Customers>
        <Review></Review>
+       <Contact></Contact>
        </>
     );
 };
